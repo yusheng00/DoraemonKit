@@ -60,7 +60,7 @@ dependencies {
     implementation rootProject.ext.dependencies["easy_refresh_layout"]
     //implementation rootProject.ext.dependencies["okgo"]
     implementation rootProject.ext.dependencies["okhttp"]
-    //implementation rootProject.ext.dependencies["okio"]
+    implementation rootProject.ext.dependencies["okhttp_v2"]
     implementation rootProject.ext.dependencies["room_runtime"]
     annotationProcessor rootProject.ext.dependencies["room_compile"]
 
@@ -76,8 +76,6 @@ dependencies {
     compileOnly rootProject.ext.dependencies["tencent_location"]
     //百度地图定位
     compileOnly files('libs/BaiduLBS_Android.jar')
-    implementation files('libs/okhttp-2.1.0.jar')
-
 
 }
 

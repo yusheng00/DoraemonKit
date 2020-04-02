@@ -45,6 +45,7 @@ ext {
                     //"SmartTable"                    : 'com.github.huangyanbin:SmartTable:2.2.0',
                     //暂时不支持3.14.0以上的okhttp版本
                     "okhttp"                  : "com.squareup.okhttp3:okhttp:3.12.1",
+                    "okhttp_v2"               : "com.squareup.okhttp:okhttp:2.7.5",
                     //将urlconnection代理到okhttp
                     //"okhttp_urlconnection"    : "com.squareup.okhttp3:okhttp-urlconnection:3.12.1",
                     //"okio"                    : "com.squareup.okio:okio:1.15.0",
