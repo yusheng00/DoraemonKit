@@ -359,8 +359,8 @@ public class MainDebugActivity extends AppCompatActivity implements View.OnClick
                 Glide.with(MainDebugActivity.this)
                         .asBitmap()
                         .load(glideImageUrl)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
+                        //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                        //.skipMemoryCache(true)
                         .into((ImageView) findViewById(R.id.iv_glide));
 
 

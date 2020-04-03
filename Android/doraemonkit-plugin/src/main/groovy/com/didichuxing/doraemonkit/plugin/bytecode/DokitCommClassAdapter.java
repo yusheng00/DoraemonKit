@@ -29,7 +29,7 @@ public final class DokitCommClassAdapter extends ClassVisitor {
     private String superName;
 
     /**
-     * @param cv             cv
+     * @param cv cv
      */
     public DokitCommClassAdapter(final ClassVisitor cv) {
         super(Opcodes.ASM7, cv);
