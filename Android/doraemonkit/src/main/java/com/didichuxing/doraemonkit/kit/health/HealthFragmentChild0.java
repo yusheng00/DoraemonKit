@@ -4,10 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,12 +20,8 @@ import com.didichuxing.doraemonkit.ui.base.BaseFragment;
 import com.didichuxing.doraemonkit.ui.dialog.DialogListener;
 import com.didichuxing.doraemonkit.ui.dialog.DialogProvider;
 import com.didichuxing.doraemonkit.ui.dialog.UniversalDialogFragment;
-import com.didichuxing.doraemonkit.ui.widget.titlebar.HomeTitleBar;
 import com.didichuxing.doraemonkit.util.DokitUtil;
 import com.didichuxing.doraemonkit.util.LogHelper;
-import com.didichuxing.doraemonkit.view.verticalviewpager.VerticalViewPager;
-
-import org.w3c.dom.Text;
 
 /**
  * 健康体检fragment
