@@ -81,7 +81,7 @@ import java.util.List;
  * DoraemonKit 真正执行的类  不建议外部app调用
  */
 class DoraemonKitReal {
-    private static final String TAG = "DoraemonKitReal";
+    private static final String TAG = "Doraemon";
 
 
     private static boolean sHasInit = false;
@@ -206,10 +206,8 @@ class DoraemonKitReal {
             tool.add(new GpsMockKit());
         }
         tool.add(new WebDoorKit());
-        tool.add(new CrashCaptureKit());
-        tool.add(new LogInfoKit());
         tool.add(new DataCleanKit());
-        tool.add(new WeakNetworkKit());
+        tool.add(new LogInfoKit());
         tool.add(new DbDebugKit());
 
         //添加性能监控kit
@@ -217,12 +215,13 @@ class DoraemonKitReal {
         performance.add(new CpuKit());
         performance.add(new RamKit());
         performance.add(new NetworkKit());
+        performance.add(new CrashCaptureKit());
         performance.add(new BlockMonitorKit());
-        performance.add(new TimeCounterKit());
-        performance.add(new MethodCostKit());
-        performance.add(new UIPerformanceKit());
         performance.add(new LargePictureKit());
-
+        performance.add(new WeakNetworkKit());
+        performance.add(new TimeCounterKit());
+        performance.add(new UIPerformanceKit());
+        performance.add(new MethodCostKit());
         try {
             //动态添加leakcanary
             AbstractKit leakCanaryKit = (AbstractKit) Class.forName("com.didichuxing.doraemonkit.kit.leakcanary.LeakCanaryKit").newInstance();
@@ -338,7 +337,7 @@ class DoraemonKitReal {
             }
             if (file.isFile()) {
                 //若是文件，直接打印 byte
-                long fileLength = FileUtils.getFileLength(file);
+                long fileLength = FileUtils.getLength(file);
                 if (fileLength > FILE_LENGTH_THRESHOLD) {
                     AppHealthInfo.DataBean.BigFileBean fileBean = new AppHealthInfo.DataBean.BigFileBean();
                     fileBean.setFileName(FileUtils.getFileName(file));

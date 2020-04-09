@@ -22,7 +22,6 @@
         android:background="@color/dk_color_F4F5F6"/>
 
 
-
     <LinearLayout
         android:id="@+id/tabMode"
         android:layout_width="match_parent"

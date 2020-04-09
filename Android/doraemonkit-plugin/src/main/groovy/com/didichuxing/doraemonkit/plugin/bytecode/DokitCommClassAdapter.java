@@ -149,6 +149,7 @@ public final class DokitCommClassAdapter extends ClassVisitor {
         if (desc == null || desc.equals("")) {
             return 0;
         }
+        //包含返回值 所以需要减1
         return desc.split(";").length - 1;
     }
 

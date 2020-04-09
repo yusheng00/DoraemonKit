@@ -65,7 +65,11 @@ public final class DokitBigImageClassAdapter extends ClassVisitor {
         if (!DokitExtUtil.getInstance().isDokitPluginSwitch()) {
             return mv;
         }
-        //Glide v4字节码替换 glide v4.9 通过init注入 4.11.0 通哟构造函数
+        if (!DokitExtUtil.getInstance().isBigImgSwitch()) {
+            return mv;
+        }
+
+        //Glide v4字节码替换 glide v4.9 通过init注入 4.11.0 通用构造函数
         if (className.equals("com/bumptech/glide/request/SingleRequest") && (methodName.equals("init") || methodName.equals("<init>")) && desc != null) {
             log(className, access, methodName, desc, signature);
             //创建MethodVisitor代理
