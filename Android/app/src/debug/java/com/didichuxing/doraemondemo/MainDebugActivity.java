@@ -38,6 +38,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.didichuxing.doraemonkit.kit.network.common.CommonHeaders;
 import com.didichuxing.doraemonkit.kit.network.common.CommonInspectorRequest;
@@ -361,8 +362,9 @@ public class MainDebugActivity extends AppCompatActivity implements View.OnClick
                 Glide.with(MainDebugActivity.this)
                         .asBitmap()
                         .load(glideImageUrl)
-                        //.diskCacheStrategy(DiskCacheStrategy.NONE)
-                        //.skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .transform(new CircleCrop())
                         .into((ImageView) findViewById(R.id.iv_glide));
 
 

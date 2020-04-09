@@ -15,14 +15,14 @@ ext {
                minSdkVersion             : 16,
                targetSdkVersion          : 29,
                //app版本号
-               versionCode               : 302,
+               versionCode               : 303,
                //dokit 插件版本号
-               pluginVersionName         : "3.0.2",
+               pluginVersionName         : "3.0.3",
                //jcenter dokit版本号 打包上传时 dokit的版本名字
-               jcenterArchivesVersionName: "3.0.2",
+               jcenterArchivesVersionName: "3.0.3",
                //didi内部仓库版本号
                didiArchivesVersionName   : "1000.0.21",
-               versionName               : "3.0.2",
+               versionName               : "3.0.3",
                glide_version             : "4.9.0",
     ]
     dependencies = [// ###### android library  start ######
