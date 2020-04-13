@@ -39,6 +39,13 @@ import com.didichuxing.doraemonkit.kit.network.common.NetworkPrinterHelper
 import com.didichuxing.doraemonkit.okgo.DokitOkGo
 import com.didichuxing.doraemonkit.okgo.callback.StringCallback
 import com.didichuxing.doraemonkit.okgo.model.Response
+import com.didichuxing.foundation.net.http.HttpBody
+import com.didichuxing.foundation.net.rpc.http.HttpRpc
+import com.didichuxing.foundation.net.rpc.http.HttpRpcClientFactory
+import com.didichuxing.foundation.net.rpc.http.HttpRpcRequest
+import com.didichuxing.foundation.net.rpc.http.HttpRpcResponse
+import com.didichuxing.foundation.rpc.RpcClient
+import com.didichuxing.foundation.rpc.RpcServiceFactory
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.view.SimpleDraweeView
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -99,7 +106,7 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
         findViewById<View>(R.id.btn_load_img).setOnClickListener(this)
         findViewById<View>(R.id.btn_okhttp_mock).setOnClickListener(this)
         findViewById<View>(R.id.btn_connection_mock).setOnClickListener(this)
-        //        findViewById(R.id.btn_rpc_mock).setOnClickListener(this);
+        findViewById<View>(R.id.btn_rpc_mock).setOnClickListener(this);
         findViewById<View>(R.id.btn_test_crash).setOnClickListener(this)
         findViewById<View>(R.id.btn_show_hide_icon).setOnClickListener(this)
         findViewById<View>(R.id.btn_create_database).setOnClickListener(this)
@@ -323,6 +330,11 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_connection_mock ->                 //requestByGet("https://www.v2ex.com/api/topics/hot.json");
                 //requestByGet("https://gank.io/api/today?a=哈哈&b=bb");
                 requestByGet("https://www.v2ex.com/api/topics/hot.json")
+
+            R.id.btn_rpc_mock -> {
+                didiRpcMock("http://gank.io/gateway?aaa=aaa&bbb=bbb")
+            }
+
             R.id.btn_test_custom -> requestByCustom("http://apis.baidu.com/txapi/weixin/wxhot?num=10&page=1&word=%E7%9B%97%E5%A2%93%E7%AC%94%E8%AE%B0")
             R.id.btn_test_crash -> testCrash()!!.length
             R.id.btn_show_hide_icon -> if (DoraemonKit.isShow()) {
@@ -342,11 +354,42 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun testCrash(): String? {
+
+    /**
+     * 滴滴内部网络框架 mock
+     *
+     * @param url
+     */
+    private fun didiRpcMock(url: String?) {
+        val factory = RpcServiceFactory(this@MainDebugActivity)
+        var client = factory.getRpcClient<RpcClient<HttpRpcRequest, HttpRpcResponse>>(HttpRpcClientFactory.PROTOCOL_HTTP)
+
+        //client = client.newBuilder().build()
+        //val formEntity = HttpBody.newInstance("application/x-www-form-urlencoded", "ccc=ccc&ddd=ddd")
+        val requestBody = JSONObject()
+        requestBody.put("eee","eee")
+        requestBody.put("fff","fff")
+        val jsonEntity = HttpBody.newInstance("application/json", requestBody.toString())
+
+        val request = HttpRpcRequest.Builder().post(url, jsonEntity).build()
+        client.newRpc(request).enqueue(object : HttpRpc.Callback {
+            override fun onSuccess(response: HttpRpcResponse?) {
+                val content = ConvertUtils.inputStream2String(response?.entity?.content, "utf-8")
+                Log.i(TAG, "didirpc====response=====>${content}")
+            }
+
+            override fun onFailure(request: HttpRpcRequest?, e: IOException?) {
+                Log.i(TAG, "didirpc====response=====>${e?.message}")
+            }
+
+        })
+    }
+
+    private fun testCrash(): String? {
         return null
     }
 
-    fun requestByGet(path: String) {
+    private fun requestByGet(path: String) {
         ThreadUtils.executeByIo(object : SimpleTask<String?>() {
             @Throws(Throwable::class)
             override fun doInBackground(): String {

@@ -89,8 +89,9 @@ dependencies {
     implementation rootProject.ext.dependencies["picasso"]
     implementation rootProject.ext.dependencies["fresco"]
     implementation rootProject.ext.dependencies["fresco-processors"]
+    implementation rootProject.ext.dependencies["didi_http"]
+    implementation rootProject.ext.dependencies["didi_rpc"]
     implementation rootProject.ext.dependencies["image-loader"]
-
     //weex相关
     implementation rootProject.ext.dependencies["weex_inspector"]
     implementation rootProject.ext.dependencies["weex_sdk"]

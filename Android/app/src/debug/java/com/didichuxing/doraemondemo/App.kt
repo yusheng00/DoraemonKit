@@ -8,6 +8,7 @@ import androidx.multidex.MultiDex
 import com.didichuxing.doraemondemo.WebViewActivity
 import com.didichuxing.doraemondemo.dokit.DemoKit
 import com.didichuxing.doraemonkit.DoraemonKit
+import com.didichuxing.doraemonkit.DoraemonKitRpc
 import com.didichuxing.doraemonkit.kit.AbstractKit
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.core.ImagePipelineConfig
@@ -27,7 +28,7 @@ class App : Application() {
         //是否显示入口icon
 //        DoraemonKit.setAwaysShowMainIcon(false);
 //        DoraemonKit.install(this, kits, "749a0600b5e48dd77cf8ee680be7b1b7")
-        DoraemonKit.install(this, kits, "70e78c27f9174d68668d8a66a2b66483")
+        DoraemonKitRpc.install(this, kits, "70e78c27f9174d68668d8a66a2b66483")
         val config = ImagePipelineConfig.newBuilder(this)
                 .setDiskCacheEnabled(false)
                 .build()
