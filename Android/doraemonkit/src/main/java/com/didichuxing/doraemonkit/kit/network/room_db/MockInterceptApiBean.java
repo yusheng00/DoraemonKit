@@ -39,6 +39,8 @@ public class MockInterceptApiBean implements AbsMockApiBean {
     private String method;
     @ColumnInfo(name = "query")
     private String query;
+    @ColumnInfo(name = "body")
+    private String body;
     @ColumnInfo(name = "fromType")
     private String fromType;
     @ColumnInfo(name = "selected_scene_name")
@@ -65,18 +67,18 @@ public class MockInterceptApiBean implements AbsMockApiBean {
     }
 
     @Ignore
-    public MockInterceptApiBean(@NonNull String id, String mockApiName, String path, String method, String fromType, String query, String group, String createPerson, String modifyPerson, List<MockApiResponseBean.DataBean.DatalistBean.SceneListBean> sceneList) {
+    public MockInterceptApiBean(@NonNull String id, String mockApiName, String path, String method, String fromType, String query, String body, String group, String createPerson, String modifyPerson, List<MockApiResponseBean.DataBean.DatalistBean.SceneListBean> sceneList) {
         this.id = id;
         this.mockApiName = mockApiName;
         this.path = path;
         this.method = method;
         this.fromType = fromType;
         this.query = query;
+        this.body = body;
         this.group = group;
         this.createPerson = createPerson;
         this.modifyPerson = modifyPerson;
         this.sceneList = sceneList;
-
     }
 
     @Override
@@ -117,6 +119,15 @@ public class MockInterceptApiBean implements AbsMockApiBean {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    @Override
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public String getFromType() {

@@ -12,7 +12,7 @@ import android.arch.persistence.room.RoomDatabase;
  * 修订历史：
  * ================================================
  */
-@Database(entities = {MockInterceptApiBean.class, MockTemplateApiBean.class}, version = 1, exportSchema = false)
+@Database(entities = {MockInterceptApiBean.class, MockTemplateApiBean.class}, version = 2, exportSchema = false)
 public abstract class DokitDatabase extends RoomDatabase {
     abstract MockApiDao mockApiDao();
 }

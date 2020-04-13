@@ -35,4 +35,6 @@ public interface AbsMockApiBean extends MultiItemEntity {
 
     String getPath();
 
+    String getBody();
+
 }
