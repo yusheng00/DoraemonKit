@@ -4,6 +4,7 @@ package com.didichuxing.doraemonkit.kit.network.okhttp.interceptor;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -63,8 +64,8 @@ public class MockInterceptor implements Interceptor {
         String queries = url.query();
         String jsonQuery = transformQuery(queries);
         String jsonRequestBody = transformRequestBody(oldRequest.body());
-        LogHelper.i(TAG, "jsonQuery===>" + jsonQuery);
-        LogHelper.i(TAG, "jsonRequestBody===>" + jsonRequestBody);
+        LogHelper.i(TAG, "realJsonQuery===>" + jsonQuery);
+        LogHelper.i(TAG, "realJsonRequestBody===>" + jsonRequestBody);
         String interceptMatchedId = DokitDbManager.getInstance().isMockMatched(path, jsonQuery, jsonRequestBody, DokitDbManager.MOCK_API_INTERCEPT, DokitDbManager.FROM_SDK_OTHER);
         String templateMatchedId = DokitDbManager.getInstance().isMockMatched(path, jsonQuery, jsonRequestBody, DokitDbManager.MOCK_API_TEMPLATE, DokitDbManager.FROM_SDK_OTHER);
         try {
@@ -119,6 +120,11 @@ public class MockInterceptor implements Interceptor {
     }
 
     /**
+     * 请求体非字符串类型标识
+     */
+    public static final String NOT_STRING_CONTENT_FLAG = "is not string content";
+
+    /**
      * 将request body 转化成json字符串
      *
      * @return
@@ -139,12 +145,14 @@ public class MockInterceptor implements Interceptor {
             } else if (requestBody.contentType().toString().toLowerCase().contains(MEDIA_TYPE_JSON)) {
                 json = DokitUtil.requestBodyToString(requestBody);
                 //类似 {"ccc":"ccc","ddd":"ddd"}
+            } else {
+                json = NOT_STRING_CONTENT_FLAG;
             }
             //测试是否是json字符串
             new JSONObject(json);
         } catch (Exception e) {
             e.printStackTrace();
-            json = "";
+            json = NOT_STRING_CONTENT_FLAG;
             LogHelper.e(TAG, "===body json====>" + json);
         }
 
