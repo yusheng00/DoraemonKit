@@ -82,6 +82,11 @@ public class RpcMockInterceptor implements RpcInterceptor<HttpRpcRequest, HttpRp
 
 
     /**
+     * 请求体非字符串类型标识
+     */
+    public static final String NOT_STRING_CONTENT_FLAG = "is not string content";
+
+    /**
      * 将request query 转化成json字符串
      *
      * @return
@@ -125,14 +130,16 @@ public class RpcMockInterceptor implements RpcInterceptor<HttpRpcRequest, HttpRp
                 //类似 ccc=ccc&ddd=ddd
                 json = DokitUtil.param2Json(form);
             } else if (requestBody.getContentType().toString().toLowerCase().contains(MEDIA_TYPE_JSON)) {
-                json = ConvertUtils.inputStream2String(requestBody.getContent(), "utf-8");
                 //类似 {"ccc":"ccc","ddd":"ddd"}
+                json = ConvertUtils.inputStream2String(requestBody.getContent(), "utf-8");
+            } else {
+                json = NOT_STRING_CONTENT_FLAG;
             }
             //测试是否是json字符串
             new JSONObject(json);
         } catch (Exception e) {
             e.printStackTrace();
-            json = "";
+            json = NOT_STRING_CONTENT_FLAG;
             LogHelper.e(TAG, "===body json====>" + json);
         }
 

@@ -332,7 +332,7 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
                 requestByGet("https://www.v2ex.com/api/topics/hot.json")
 
             R.id.btn_rpc_mock -> {
-                didiRpcMock("http://gank.io/gateway?aaa=aaa&bbb=bbb")
+                didiRpcMock("http://gank.io/gateway?aaa=aaa")
             }
 
             R.id.btn_test_custom -> requestByCustom("http://apis.baidu.com/txapi/weixin/wxhot?num=10&page=1&word=%E7%9B%97%E5%A2%93%E7%AC%94%E8%AE%B0")
@@ -367,8 +367,8 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
         //client = client.newBuilder().build()
         //val formEntity = HttpBody.newInstance("application/x-www-form-urlencoded", "ccc=ccc&ddd=ddd")
         val requestBody = JSONObject()
-        requestBody.put("eee","eee")
-        requestBody.put("fff","fff")
+        requestBody.put("bbb","bbb")
+        requestBody.put("ccc","ccc")
         val jsonEntity = HttpBody.newInstance("application/json", requestBody.toString())
 
         val request = HttpRpcRequest.Builder().post(url, jsonEntity).build()
