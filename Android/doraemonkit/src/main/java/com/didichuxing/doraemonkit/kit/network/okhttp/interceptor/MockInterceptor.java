@@ -45,14 +45,13 @@ public class MockInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request oldRequest = chain.request();
         Response oldResponse = chain.proceed(oldRequest);
-
-        HttpUrl url = oldRequest.url();
-        String host = url.host();
         String contentType = oldResponse.header("Content-Type");
         //如果是图片则不进行拦截
         if (InterceptorUtil.isImg(contentType)) {
             return oldResponse;
         }
+        HttpUrl url = oldRequest.url();
+        String host = url.host();
 
         //如果是mock平台的接口则不进行拦截
         if (host.equalsIgnoreCase(NetworkManager.MOCK_HOST)) {
@@ -84,7 +83,6 @@ public class MockInterceptor implements Interceptor {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return oldResponse;
         }
         return oldResponse;
     }
@@ -111,8 +109,8 @@ public class MockInterceptor implements Interceptor {
             //测试是否是json字符串
             new JSONObject(json);
         } catch (Exception e) {
-            e.printStackTrace();
-            json = "";
+            //e.printStackTrace();
+            json = NOT_STRING_CONTENT_FLAG;
             LogHelper.e(TAG, "===query json====>" + json);
         }
 
@@ -138,6 +136,11 @@ public class MockInterceptor implements Interceptor {
         }
 
         try {
+            String strBody = DokitUtil.requestBodyToString(requestBody);
+            if (TextUtils.isEmpty(strBody)) {
+                return "";
+            }
+
             if (requestBody.contentType().toString().toLowerCase().contains(MEDIA_TYPE_FORM)) {
                 String form = DokitUtil.requestBodyToString(requestBody);
                 //类似 ccc=ccc&ddd=ddd
@@ -151,7 +154,7 @@ public class MockInterceptor implements Interceptor {
             //测试是否是json字符串
             new JSONObject(json);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             json = NOT_STRING_CONTENT_FLAG;
             LogHelper.e(TAG, "===body json====>" + json);
         }
@@ -260,6 +263,8 @@ public class MockInterceptor implements Interceptor {
         Request newRequest = new Request.Builder()
                 .method("GET", null)
                 .url(newUrl).build();
+        //需要提前关闭数据流 不然在某些场景下会报错
+        oldResponse.close();
         Response newResponse = chain.proceed(newRequest);
         if (newResponse.code() == 200) {
             //判断新的response是否有数据
