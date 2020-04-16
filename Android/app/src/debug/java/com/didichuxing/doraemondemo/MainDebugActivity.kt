@@ -32,22 +32,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.didichuxing.doraemondemo.retrofit.GithubService
-import com.didichuxing.doraemondemo.retrofit.GithubUserInfo
 import com.didichuxing.doraemonkit.DoraemonKit
-import com.didichuxing.doraemonkit.kit.network.common.CommonHeaders
-import com.didichuxing.doraemonkit.kit.network.common.CommonInspectorRequest
-import com.didichuxing.doraemonkit.kit.network.common.CommonInspectorResponse
-import com.didichuxing.doraemonkit.kit.network.common.NetworkPrinterHelper
 import com.didichuxing.doraemonkit.okgo.DokitOkGo
 import com.didichuxing.doraemonkit.okgo.callback.StringCallback
 import com.didichuxing.doraemonkit.okgo.model.Response
-import com.didichuxing.foundation.net.http.HttpBody
-import com.didichuxing.foundation.net.rpc.http.HttpRpc
-import com.didichuxing.foundation.net.rpc.http.HttpRpcClientFactory
-import com.didichuxing.foundation.net.rpc.http.HttpRpcRequest
-import com.didichuxing.foundation.net.rpc.http.HttpRpcResponse
-import com.didichuxing.foundation.rpc.RpcClient
-import com.didichuxing.foundation.rpc.RpcServiceFactory
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.view.SimpleDraweeView
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -330,10 +318,10 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
 
                 val json = JSONObject()
                 json.put("ccc", "ccc")
-                //json.put("ddd", "dddd")
+                json.put("age", "15")
                 //json
                 DokitOkGo.post<String>("http://www.v2ex.com/api/topics/hot.json?name=yi")
-                        //.upJson(json.toString())
+                        .upJson(json.toString())
                         .execute(object : StringCallback() {
                             override fun onSuccess(response: Response<String>) {
                                 Log.i(TAG, "okhttp====onSuccess===>" + response.body())
@@ -346,8 +334,7 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
             }
 
 
-            R.id.btn_connection_mock ->
-                //requestByGet("https://www.v2ex.com/api/topics/hot.json");
+            R.id.btn_connection_mock ->                 //requestByGet("https://www.v2ex.com/api/topics/hot.json");
                 //requestByGet("https://gank.io/api/today?a=哈哈&b=bb");
                 requestByGet("https://www.v2ex.com/api/topics/hot.json")
             R.id.btn_retrofit_mock -> {
@@ -441,58 +428,6 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    /**
-     * 手动添加网络抓包数据。目前只支持OKHttp3和HttpUrlConnection的自动注册，其他不基于OkHttp3和HttpUrlConnection的网络库如果
-     * 想统计抓包数据，需要调用下面四个方法手动添加。添加方式如下
-     * [NetworkPrinterHelper.obtainRequestId]}
-     * [NetworkPrinterHelper.updateRequest]
-     * [NetworkPrinterHelper.updateResponse]
-     * [NetworkPrinterHelper.updateResponseBody]
-     */
-    fun requestByCustom(url: String?) {
-// obtain id for this request
-        val id = NetworkPrinterHelper.obtainRequestId()
-        val client = OkHttpClient().newBuilder()
-                .addInterceptor { chain ->
-                    val request = chain.request()
-                    var headers = request.headers()
-                    var builder = CommonHeaders.Builder()
-                    for (i in 0 until headers.size()) {
-                        builder.add(headers.name(i), headers.value(i))
-                    }
-                    var body: String? = null
-                    if (request.body() != null) {
-                        body = request.body().toString()
-                    }
-                    // create request bean and updateInterceptApi
-                    val rq = CommonInspectorRequest(id, request.url().toString(), request.method(), body, builder.build())
-                    NetworkPrinterHelper.updateRequest(rq)
-                    val response = chain.proceed(request)
-                    headers = response.headers()
-                    builder = CommonHeaders.Builder()
-                    for (i in 0 until headers.size()) {
-                        builder.add(headers.name(i), headers.value(i))
-                    }
-                    // create response bean and updateInterceptApi
-                    val rp = CommonInspectorResponse(id, rq.url(), response.code(), builder.build())
-                    NetworkPrinterHelper.updateResponse(rp)
-                    response
-                }.build()
-        val request = Request.Builder().get().url(url).build()
-        val call = client.newCall(request)
-        call.enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                onHttpFailure(e)
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val responseStr = response.body()!!.string()
-                // updateInterceptApi response body
-                NetworkPrinterHelper.updateResponseBody(id, responseStr)
-            }
-        })
-    }
 
     /**
      * 模拟上传或下载文件
