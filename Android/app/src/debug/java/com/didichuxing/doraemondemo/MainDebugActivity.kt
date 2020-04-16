@@ -36,6 +36,13 @@ import com.didichuxing.doraemonkit.DoraemonKit
 import com.didichuxing.doraemonkit.okgo.DokitOkGo
 import com.didichuxing.doraemonkit.okgo.callback.StringCallback
 import com.didichuxing.doraemonkit.okgo.model.Response
+import com.didichuxing.foundation.net.http.HttpBody
+import com.didichuxing.foundation.net.rpc.http.HttpRpc
+import com.didichuxing.foundation.net.rpc.http.HttpRpcClientFactory
+import com.didichuxing.foundation.net.rpc.http.HttpRpcRequest
+import com.didichuxing.foundation.net.rpc.http.HttpRpcResponse
+import com.didichuxing.foundation.rpc.RpcClient
+import com.didichuxing.foundation.rpc.RpcServiceFactory
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.view.SimpleDraweeView
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -334,7 +341,8 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
             }
 
 
-            R.id.btn_connection_mock ->                 //requestByGet("https://www.v2ex.com/api/topics/hot.json");
+            R.id.btn_connection_mock ->
+                //requestByGet("https://www.v2ex.com/api/topics/hot.json");
                 //requestByGet("https://gank.io/api/today?a=哈哈&b=bb");
                 requestByGet("https://www.v2ex.com/api/topics/hot.json")
             R.id.btn_retrofit_mock -> {
@@ -348,7 +356,6 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
                 didiRpcMock("http://gank.io/gateway?aaa=aaa")
             }
 
-            R.id.btn_test_custom -> requestByCustom("http://apis.baidu.com/txapi/weixin/wxhot?num=10&page=1&word=%E7%9B%97%E5%A2%93%E7%AC%94%E8%AE%B0")
             R.id.btn_test_crash -> testCrash()!!.length
             R.id.btn_show_hide_icon -> if (DoraemonKit.isShow()) {
                 DoraemonKit.hide()
