@@ -1,11 +1,16 @@
 package com.didichuxing.foundation.net.rpc.http;
 
+import android.util.Log;
+
+import com.blankj.utilcode.util.ReflectUtils;
 import com.didichuxing.doraemonkit.kit.network.rpc.RpcMockInterceptor;
 import com.didichuxing.doraemonkit.kit.network.rpc.RpcMonitorInterceptor;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
+import didihttp.DidiHttpClient;
 import didihttp.Interceptor;
 
 
@@ -36,5 +41,38 @@ public class PlatformHttpHook {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * @param builder        真实的对象为DidiHttpClient.Builder
+     * @param didiHttpClient 真实的对象为DidiHttpClient
+     */
+    public static void performDidiHttpOneParamBuilderInit(Object builder, Object didiHttpClient) {
+        try {
+            if (builder instanceof DidiHttpClient.Builder) {
+                DidiHttpClient.Builder localBuild = (DidiHttpClient.Builder) builder;
+                List<Interceptor> interceptors = removeDuplicate(localBuild.interceptors());
+                ReflectUtils.reflect(localBuild).field("interceptors", interceptors);
+                Log.i("Doraemon", "====performDidiHttpOneParamBuilderInit===");
+            }
+        } catch (Exception e) {
+            Log.i("Doraemon", "" + e.getMessage());
+        }
+
+    }
+
+    /**
+     * 保证顺序并去重
+     *
+     * @param list
+     * @return
+     */
+    private static List<Interceptor> removeDuplicate(List<Interceptor> list) {
+        //保证顺序并去重
+        LinkedHashSet h = new LinkedHashSet<Interceptor>(list);
+        list.clear();
+        list.addAll(h);
+        return list;
     }
 }

@@ -10,10 +10,10 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  * Only weave okhttp3/OkHttpClient's init method
  * Created by Quinn on 09/09/2018.
  */
-public final class PlatformHttpMethodAdapter extends LocalVariablesSorter implements Opcodes {
+public final class PlatformNullConsHttpMethodAdapter extends LocalVariablesSorter implements Opcodes {
 
 
-    public PlatformHttpMethodAdapter(int access, String desc, MethodVisitor mv) {
+    public PlatformNullConsHttpMethodAdapter(int access, String desc, MethodVisitor mv) {
         super(Opcodes.ASM7, access, desc, mv);
     }
 

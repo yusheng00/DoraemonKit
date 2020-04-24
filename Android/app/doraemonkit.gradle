@@ -6,13 +6,13 @@ if (rootProject.ext.config["applyPlugin"]) {
     // 这里引用正常库
     dependencies {
         //外部平台依赖
-        debugImplementation project(":doraemonkit")
+        //debugImplementation project(":doraemonkit")
         debugImplementation project(":doraemonkit-rpc")
         //debugImplementation project(":doraemonkit-leakcanary")
 //        debugImplementation project(":doraemonkit-leakcanary")
-        debugImplementation project(":doraemonkit-weex")
+        //debugImplementation project(":doraemonkit-weex")
 //        releaseImplementation project(":doraemonkit-no-op")
-        releaseImplementation project(":doraemonkit-weex-no-op")
+        //releaseImplementation project(":doraemonkit-weex-no-op")
         //新版线上包
 //        debugImplementation "com.didichuxing.doraemonkit:doraemonkit:${rootProject.ext.android["didiArchivesVersionName"]}"
 //        debugImplementation "com.didichuxing.doraemonkit:doraemonkit-leakcanary:${rootProject.ext.android["didiArchivesVersionName"]}"
