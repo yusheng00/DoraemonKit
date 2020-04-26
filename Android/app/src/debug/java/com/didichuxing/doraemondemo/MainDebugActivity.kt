@@ -398,11 +398,11 @@ class MainDebugActivity : BaseActivity(), View.OnClickListener {
         client.newRpc(request).enqueue(object : HttpRpc.Callback {
             override fun onSuccess(response: HttpRpcResponse?) {
                 val content = ConvertUtils.inputStream2String(response?.entity?.content, "utf-8")
-                Log.i(TAG, "didirpc====response=====>${content}")
+                Log.i(TAG, "didirpc==onSuccess==response=====>${content}")
             }
 
             override fun onFailure(request: HttpRpcRequest?, e: IOException?) {
-                Log.i(TAG, "didirpc====response=====>${e?.message}")
+                Log.i(TAG, "didirpc==onFailure==response=====>${e?.message}")
             }
 
         })

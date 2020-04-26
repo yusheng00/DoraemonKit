@@ -5,6 +5,7 @@ import android.util.Log;
 import com.blankj.utilcode.util.ReflectUtils;
 import com.didichuxing.doraemonkit.kit.network.rpc.RpcMockInterceptor;
 import com.didichuxing.doraemonkit.kit.network.rpc.RpcMonitorInterceptor;
+import com.didichuxing.doraemonkit.kit.network.rpc.RpcWeakNetworkInterceptor;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -25,6 +26,7 @@ import didihttp.Interceptor;
  */
 public class PlatformHttpHook {
     public static List<Interceptor> globalInterceptors = new ArrayList<>();
+    public static List<Interceptor> globalNetworkInterceptors = new ArrayList<>();
     private static boolean IS_INSTALL = false;
 
     public static void installInterceptor() {
@@ -33,10 +35,12 @@ public class PlatformHttpHook {
         }
         try {
             //可能存在用户没有引入滴滴内部网络库的情况
-            OkHttpRpc.OkHttpRpcInterceptor rpcMockInterceptor = new OkHttpRpc.OkHttpRpcInterceptor((new RpcMockInterceptor()));
-            OkHttpRpc.OkHttpRpcInterceptor rpcMonitorInterceptor = new OkHttpRpc.OkHttpRpcInterceptor((new RpcMonitorInterceptor()));
+            OkHttpRpc.OkHttpRpcInterceptor rpcMockInterceptor = new OkHttpRpc.OkHttpRpcInterceptor(new RpcMockInterceptor());
+            OkHttpRpc.OkHttpRpcInterceptor rpcMonitorInterceptor = new OkHttpRpc.OkHttpRpcInterceptor(new RpcMonitorInterceptor());
             globalInterceptors.add(rpcMockInterceptor);
             globalInterceptors.add(rpcMonitorInterceptor);
+            Interceptor weakNetworkInterceptor = new RpcWeakNetworkInterceptor();
+            globalNetworkInterceptors.add(weakNetworkInterceptor);
             IS_INSTALL = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,8 +57,10 @@ public class PlatformHttpHook {
             if (builder instanceof DidiHttpClient.Builder) {
                 DidiHttpClient.Builder localBuild = (DidiHttpClient.Builder) builder;
                 List<Interceptor> interceptors = removeDuplicate(localBuild.interceptors());
+                List<Interceptor> networkInterceptors = removeDuplicate(localBuild.networkInterceptors());
                 ReflectUtils.reflect(localBuild).field("interceptors", interceptors);
-                Log.i("Doraemon", "====performDidiHttpOneParamBuilderInit===");
+                ReflectUtils.reflect(localBuild).field("networkInterceptors", networkInterceptors);
+                //Log.i("Doraemon", "====performDidiHttpOneParamBuilderInit===");
             }
         } catch (Exception e) {
             Log.i("Doraemon", "" + e.getMessage());

@@ -27,6 +27,14 @@ public final class PlatformNullConsHttpMethodAdapter extends LocalVariablesSorte
             mv.visitFieldInsn(GETSTATIC, "com/didichuxing/foundation/net/rpc/http/PlatformHttpHook", "globalInterceptors", "Ljava/util/List;");
             mv.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "addAll", "(Ljava/util/Collection;)Z", true);
             mv.visitInsn(POP);
+
+
+            //插入NetworkInterceptor 网络拦截器
+            mv.visitVarInsn(ALOAD, 0);
+            mv.visitFieldInsn(GETFIELD, "didihttp/DidiHttpClient$Builder", "networkInterceptors", "Ljava/util/List;");
+            mv.visitFieldInsn(GETSTATIC, "com/didichuxing/foundation/net/rpc/http/PlatformHttpHook", "globalNetworkInterceptors", "Ljava/util/List;");
+            mv.visitMethodInsn(INVOKEINTERFACE, "java/util/List", "addAll", "(Ljava/util/Collection;)Z", true);
+            mv.visitInsn(POP);
         }
         super.visitInsn(opcode);
     }
