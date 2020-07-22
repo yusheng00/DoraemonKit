@@ -46,25 +46,6 @@ Pod::Spec.new do |s|
     }
     ss.dependency 'DoraemonKit/Core'
   end
-
-  s.subspec 'WithLoad' do |ss| 
-    ss.source_files = 'iOS/DoraemonKit/Src/MethodUseTime/**/*{.h,.m}'
-    ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) DoraemonWithLoad'
-    }
-    ss.dependency 'DoraemonKit/Core'
-    ss.vendored_frameworks = 'iOS/DoraemonKit/Framework/*.framework'
-  end
-
-  s.subspec 'WithWeex' do |ss| 
-    ss.source_files = 'iOS/DoraemonKit/Src/Weex/**/*{.h,.m}'
-    ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) DoraemonWithWeex'
-    }
-    ss.dependency 'DoraemonKit/Core'
-    ss.dependency 'WeexSDK'
-    ss.dependency 'WXDevtool'
-  end
   
   s.subspec 'WithDatabase' do |ss|
       ss.source_files = 'iOS/DoraemonKit/Src/Database/**/*{.h,.m}'

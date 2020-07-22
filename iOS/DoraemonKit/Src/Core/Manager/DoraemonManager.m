@@ -38,11 +38,6 @@
 #import "DoraemonCocoaLumberjackListViewController.h"
 #endif
 
-#if DoraemonWithWeex
-#import "DoraemonWeexLogDataSource.h"
-#import "DoraemonWeexInfoDataManager.h"
-#endif
-
 
 #define kTitle        @"title"
 #define kDesc         @"desc"
@@ -192,13 +187,7 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     [[DoraemonMockManager sharedInstance] queryMockData:^(int flag) {
         DoKitLog(@"mock get data, flag == %i",flag);
     }];
-    
-    //Weex工具的初始化
-#if DoraemonWithWeex
-    [DoraemonWeexLogDataSource shareInstance];
-    [DoraemonWeexInfoDataManager shareInstance];
-#endif
-    
+        
     //开启健康体检
     if ([[DoraemonCacheManager sharedInstance] healthStart]) {
         [[DoraemonHealthManager sharedInstance] startHealthCheck];
@@ -263,13 +252,6 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonViewMetricsPlugin];
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonHierarchyPlugin];
     
-    #pragma mark - Weex专项工具
-    #if DoraemonWithWeex
-        [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonWeexLogPlugin];
-        [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonWeexStoragePlugin];
-        [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonWeexInfoPlugin];
-        [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonWeexDevToolPlugin];
-    #endif
 }
 
 /**
