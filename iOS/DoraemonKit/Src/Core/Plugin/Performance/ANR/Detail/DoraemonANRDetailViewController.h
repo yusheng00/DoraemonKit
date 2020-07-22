@@ -11,4 +11,6 @@
 
 @property (nonatomic, strong) NSString *filePath;
 
+@property (nonatomic, strong) NSDictionary *info;
+
 @end

@@ -153,7 +153,8 @@ NSString *_doraemon_backtraceOfThread(thread_t thread) {
     Dl_info symbolicated[backtraceLength];
     doraemon_symbolicate(backtraceBuffer, symbolicated, backtraceLength, 0);
     for (int i = 0; i < backtraceLength; ++i) {
-        [resultString appendFormat:@"%@", doraemon_logBacktraceEntry(i, backtraceBuffer[i], &symbolicated[i])];
+        NSString *tem = doraemon_logBacktraceEntry(i, backtraceBuffer[i], &symbolicated[i]);
+        [resultString appendFormat:@"%@", tem];
     }
     [resultString appendFormat:@"\n"];
     return [resultString copy];
@@ -215,7 +216,8 @@ NSString* doraemon_logBacktraceEntry(const int entryNum,
         sname = saddrBuff;
         offset = address - (uintptr_t)dlInfo->dli_fbase;
     }
-    return [NSString stringWithFormat:@"%-30s  0x%08" PRIxPTR " %s + %lu\n" ,fname, (uintptr_t)address, sname, offset];
+    NSString *tem = [NSString stringWithCString:fname encoding:NSUTF8StringEncoding];
+    return [NSString stringWithFormat:@"%@: 0x%08" PRIxPTR "\n %s + %lu &&" ,tem, (uintptr_t)address, sname, offset];
 }
 
 const char* doraemon_lastPathEntry(const char* const path) {

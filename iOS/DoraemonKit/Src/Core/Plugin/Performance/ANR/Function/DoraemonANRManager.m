@@ -12,6 +12,7 @@
 #import "DoraemonAppInfoUtil.h"
 #import "Doraemoni18NUtil.h"
 #import "DoraemonANRTool.h"
+#import "DoraemonANRDetailViewController.h"
 
 //默认超时间隔
 static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
@@ -73,11 +74,22 @@ static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
         }
         [DoraemonANRTool saveANRInfo:info];
         
+        int duration = [info[@"duration"] intValue];
+        
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            DoraemonANRDetailViewController *vc = [[DoraemonANRDetailViewController alloc] init];
+            vc.info = info;
+            [UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
+        }];
+        
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
         }];
-        UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"Warn" message:@"这里有个卡顿，" preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertController *vc = [UIAlertController alertControllerWithTitle: @"Warn" message: [NSString stringWithFormat: @"在主线程中阻塞时间超过 %d ms，请查看详细的调用堆栈信息解决问题", duration] preferredStyle:UIAlertControllerStyleAlert];
         [vc addAction:action];
+        [vc addAction:action2];
+        
         [UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
 
     });
