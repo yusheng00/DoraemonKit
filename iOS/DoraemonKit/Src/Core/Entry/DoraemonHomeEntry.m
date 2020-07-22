@@ -17,7 +17,6 @@
 #import "DoraemonHomeFootCell.h"
 #import "DoraemonHomeCloseCell.h"
 #import "UIViewController+Doraemon.h"
-#import "DoraemonBuriedPointManager.h"
 
 static NSString *DoraemonHomeCellID = @"DoraemonHomeCellID";
 static NSString *DoraemonHomeHeadCellID = @"DoraemonHomeHeadCellID";
@@ -185,7 +184,6 @@ static NSString *DoraemonHomeCloseCellID = @"DoraemonHomeCloseCellID";
         NSDictionary *itemData = pluginArray[indexPath.row];
         NSString *pluginName = itemData[@"pluginName"];
         if(pluginName){
-            DoKitBP(itemData[@"buriedPoint"])
             Class pluginClass = NSClassFromString(pluginName);
             id<DoraemonPluginProtocol> plugin = [[pluginClass alloc] init];
             if ([plugin respondsToSelector:@selector(pluginDidLoad)]) {

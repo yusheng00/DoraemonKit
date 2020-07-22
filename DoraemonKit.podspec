@@ -38,14 +38,6 @@ Pod::Spec.new do |s|
     ss.dependency 'DoraemonKit/Core'
     ss.dependency 'CocoaLumberjack'
   end
-
-  s.subspec 'WithGPS' do |ss| 
-    ss.source_files = 'iOS/DoraemonKit/Src/GPS/**/*{.h,.m}'
-    ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) DoraemonWithGPS'
-    }
-    ss.dependency 'DoraemonKit/Core'
-  end
   
   s.subspec 'WithDatabase' do |ss|
       ss.source_files = 'iOS/DoraemonKit/Src/Database/**/*{.h,.m}'
@@ -56,13 +48,5 @@ Pod::Spec.new do |s|
       ss.dependency 'YYDebugDatabase'
   end
 
-  s.subspec 'WithMLeaksFinder' do |ss|
-    ss.source_files = 'iOS/DoraemonKit/Src/MLeaksFinder/**/*{.h,.m}'
-    ss.pod_target_xcconfig = {
-      'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) DoraemonWithMLeaksFinder'
-    }
-    ss.dependency 'DoraemonKit/Core'
-    #ss.dependency 'FBRetainCycleDetector'
-  end
 end
 

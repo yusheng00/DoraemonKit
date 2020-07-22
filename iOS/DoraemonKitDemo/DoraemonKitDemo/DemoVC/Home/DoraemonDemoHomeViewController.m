@@ -10,15 +10,11 @@
 #import "DoraemonDemoLoggerViewController.h"
 #import "DoraemonDemoPerformanceViewController.h"
 #import "DoraemonDemoSanboxViewController.h"
-#import "DoraemonDemoUIViewController.h"
-#import "DoraemonDemoNetViewController.h"
-#import "DoraemonDemoMockGPSViewController.h"
 #import "DoraemonDemoCrashViewController.h"
 #import "DoraemonDemoCommonViewController.h"
 #import <objc/runtime.h>
 #import "UIView+Doraemon.h"
 #import "UIViewController+Doraemon.h"
-#import "DoraemonDemoMemoryLeakViewController.h"
 
 @interface DoraemonDemoHomeViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -66,17 +62,9 @@
     }else if(row==2){
         txt = DoraemonDemoLocalizedString(@"性能测试Demo");
     }else if(row==3){
-        txt = DoraemonDemoLocalizedString(@"视觉测试Demo");
-    }else if(row==4){
-        txt = DoraemonDemoLocalizedString(@"网络测试Demo");
-    }else if(row==5){
-        txt = DoraemonDemoLocalizedString(@"模拟位置Demo");
-    }else if(row==6){
         txt = DoraemonDemoLocalizedString(@"crash触发Demo");
-    }else if(row==7){
+    }else if(row==4){
         txt = DoraemonDemoLocalizedString(@"通用测试Demo");
-    }else if(row==8){
-        txt = DoraemonDemoLocalizedString(@"内存泄漏测试");
     }
     cell.textLabel.text = txt;
     return cell;
@@ -92,17 +80,9 @@
     }else if(row == 2){
         vc = [[DoraemonDemoPerformanceViewController alloc] init];
     }else if(row == 3){
-        vc = [[DoraemonDemoUIViewController alloc] init];
-    }else if(row == 4){
-        vc = [[DoraemonDemoNetViewController alloc] init];
-    }else if(row == 5){
-        vc = [[DoraemonDemoMockGPSViewController alloc] init];
-    }else if(row == 6){
         vc = [[DoraemonDemoCrashViewController alloc] init];
-    }else if(row == 7){
+    }else if(row == 4){
         vc = [[DoraemonDemoCommonViewController alloc] init];
-    }else{
-        vc = [[DoraemonDemoMemoryLeakViewController alloc] init];
     }
     [self.navigationController pushViewController:vc animated:YES];
  

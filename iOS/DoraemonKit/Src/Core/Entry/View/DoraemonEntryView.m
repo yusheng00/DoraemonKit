@@ -13,7 +13,6 @@
 #import "DoraemonDefine.h"
 #import "DoraemonHomeWindow.h"
 #import "DoraemonStatusBarViewController.h"
-#import "DoraemonBuriedPointManager.h"
 
 @interface DoraemonEntryView()
 
@@ -129,7 +128,6 @@
 - (void)entryClick:(UIButton *)btn{
     if ([DoraemonHomeWindow shareInstance].hidden) {
         [[DoraemonHomeWindow shareInstance] show];
-        DoKitBP(@"dokit_sdk_home_ck_entry")
     }else{
         [[DoraemonHomeWindow shareInstance] hide];
     }

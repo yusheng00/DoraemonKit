@@ -19,17 +19,7 @@
 #import "DoraemonNSLogViewController.h"
 #import "DoraemonNSLogListViewController.h"
 #import "DoraemonHomeWindow.h"
-#import "DoraemonStatisticsUtil.h"
 #import "DoraemonANRManager.h"
-#import "DoraemonLargeImageDetectionManager.h"
-#import "DoraemonMockManager.h"
-#import "DoraemonNetFlowOscillogramWindow.h"
-#import "DoraemonNetFlowManager.h"
-#import "DoraemonHealthManager.h"
-
-#if DoraemonWithGPS
-#import "DoraemonGPSMocker.h"
-#endif
 
 
 #if DoraemonWithLogger
@@ -136,25 +126,11 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
         [DoraemonCrashUncaughtExceptionHandler registerHandler];
         [DoraemonCrashSignalExceptionHandler registerHandler];
     }
-    //根据开关判断是否开启流量监控
-    if ([[DoraemonCacheManager sharedInstance] netFlowSwitch]) {
-        [[DoraemonNetFlowManager shareInstance] canInterceptNetFlow:YES];
-        //[[DoraemonNetFlowOscillogramWindow shareInstance] show];
-    }
 
     //重新启动的时候，把帧率、CPU、内存和流量监控关闭
     [[DoraemonCacheManager sharedInstance] saveFpsSwitch:NO];
     [[DoraemonCacheManager sharedInstance] saveCpuSwitch:NO];
     [[DoraemonCacheManager sharedInstance] saveMemorySwitch:NO];
-
-#if DoraemonWithGPS
-    //开启mockGPS功能
-    if ([[DoraemonCacheManager sharedInstance] mockGPSSwitch]) {
-        CLLocationCoordinate2D coordinate = [[DoraemonCacheManager sharedInstance] mockCoordinate];
-        CLLocation *loc = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-        [[DoraemonGPSMocker shareInstance] mockPoint:loc];
-    }
-#endif
 
     
     //开启NSLog监控功能
@@ -174,25 +150,6 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
             self.anrBlock(anrInfo);
         }
     }];
-    
-    //外部设置大图检测的数值
-    if (_bigImageDetectionSize > 0){
-        [DoraemonLargeImageDetectionManager shareInstance].minimumDetectionSize = _bigImageDetectionSize;
-    }
-    
-    //统计开源项目使用量 不用于任何恶意行为
-    [[DoraemonStatisticsUtil shareInstance] upLoadUserInfo];
-    
-    //拉取最新的mock数据
-    [[DoraemonMockManager sharedInstance] queryMockData:^(int flag) {
-        DoKitLog(@"mock get data, flag == %i",flag);
-    }];
-        
-    //开启健康体检
-    if ([[DoraemonCacheManager sharedInstance] healthStart]) {
-        [[DoraemonHealthManager sharedInstance] startHealthCheck];
-    }
-    
 }
 
 
@@ -208,9 +165,6 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonAppSettingPlugin];
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonAppInfoPlugin];
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonSandboxPlugin];
-#if DoraemonWithGPS
-    [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonGPSPlugin];
-#endif
 
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonH5Plugin];
     [self addPluginWithPluginType:DoraemonManagerPluginType_DoraemonDeleteLocalDataPlugin];

@@ -12,7 +12,6 @@
 #import "DoraemonAppInfoUtil.h"
 #import "Doraemoni18NUtil.h"
 #import "DoraemonANRTool.h"
-#import "DoraemonHealthManager.h"
 
 //默认超时间隔
 static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
@@ -69,11 +68,18 @@ static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[DoraemonHealthManager sharedInstance] addANRInfo:info];
         if (self.block) {
             self.block(info);
         }
         [DoraemonANRTool saveANRInfo:info];
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"Warn" message:@"这里有个卡顿，" preferredStyle:UIAlertControllerStyleAlert];
+        [vc addAction:action];
+        [UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
+
     });
 
 }
