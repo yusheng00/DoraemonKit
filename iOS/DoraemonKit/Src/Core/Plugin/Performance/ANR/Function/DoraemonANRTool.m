@@ -7,6 +7,7 @@
 //
 
 #import "DoraemonANRTool.h"
+#import "DoraemonManager.h"
 
 @implementation DoraemonANRTool
 
@@ -16,7 +17,7 @@
         NSString *anrDirectory = [self anrDirectory];
         if (anrDirectory && [manager fileExistsAtPath:anrDirectory]) {
             // 获取 ANR 保存的路径
-            NSString *anrPath = [anrDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"ANR %@.plist", info[@"title"]]];
+            NSString *anrPath = [anrDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.plist", info[@"title"]]];
             [info writeToFile:anrPath atomically:YES];
         }
     }
@@ -24,7 +25,7 @@
 
 + (NSString *)anrDirectory {
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *directory = [cachePath stringByAppendingPathComponent:@"ANR"];
+    NSString *directory = [cachePath stringByAppendingPathComponent: [NSString stringWithFormat:@"ANR/%@", [DoraemonManager shareInstance].currentPage]];
     
     NSFileManager *manager = [NSFileManager defaultManager];
     if (![manager fileExistsAtPath:directory]) {

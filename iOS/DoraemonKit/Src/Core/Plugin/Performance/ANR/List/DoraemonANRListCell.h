@@ -13,6 +13,8 @@
 
 - (void)renderCellWithData:(DoraemonSandboxModel *)model;
 
+- (void)renderCellWithModel:(DoraemonSandboxModel *)model;
+
 + (CGFloat)cellHeight;
 
 @end

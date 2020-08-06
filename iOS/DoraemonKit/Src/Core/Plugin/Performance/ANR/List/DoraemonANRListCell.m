@@ -36,7 +36,17 @@
     return self;
 }
 
-- (void)renderCellWithData:(DoraemonSandboxModel *)model {
+- (void)renderCellWithData:(NSString *)string {
+    self.titleLabel.text = string;
+    [self.titleLabel sizeToFit];
+    CGFloat w = self.titleLabel.doraemon_width;
+    if (w > DoraemonScreenWidth-kDoraemonSizeFrom750_Landscape(120)) {
+        w = DoraemonScreenWidth-kDoraemonSizeFrom750_Landscape(120);
+    }
+    self.titleLabel.frame = CGRectMake(kDoraemonSizeFrom750_Landscape(32), [[self class] cellHeight]/2-self.titleLabel.doraemon_height/2, w, self.titleLabel.doraemon_height);
+}
+
+- (void)renderCellWithModel:(DoraemonSandboxModel *)model {
     self.titleLabel.text = @"";
     if ([model.name isKindOfClass:[NSString class]] && (model.name.length > 0)) {
         self.titleLabel.text = model.name;
@@ -46,7 +56,7 @@
             w = DoraemonScreenWidth-kDoraemonSizeFrom750_Landscape(120);
         }
         self.titleLabel.frame = CGRectMake(kDoraemonSizeFrom750_Landscape(32), [[self class] cellHeight]/2-self.titleLabel.doraemon_height/2, w, self.titleLabel.doraemon_height);
-    } 
+    }
 }
 
 + (CGFloat)cellHeight{

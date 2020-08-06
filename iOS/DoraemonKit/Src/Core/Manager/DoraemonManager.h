@@ -107,7 +107,12 @@ typedef NS_ENUM(NSUInteger, DoraemonManagerPluginType) {
 
 + (nonnull DoraemonManager *)shareInstance;
 
-@property (nonatomic, copy) NSString *appKey __attribute__((deprecated("此属性已被弃用，替换方式请参考最新 https://www.dokit.cn/ 的使用手册")));
+
+// 当前页面
+@property (nonatomic, copy) NSString *currentPage;
+
+// 弹窗提醒
+@property (nonatomic, assign) BOOL isAlreadyNoticed;
 
 @property (nonatomic, copy) NSString *pId; //产品id 平台端的工具必须填写
 

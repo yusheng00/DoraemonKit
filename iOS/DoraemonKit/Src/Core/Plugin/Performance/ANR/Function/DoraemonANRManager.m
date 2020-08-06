@@ -13,6 +13,8 @@
 #import "Doraemoni18NUtil.h"
 #import "DoraemonANRTool.h"
 #import "DoraemonANRDetailViewController.h"
+#import "MBProgressHUD.h"
+#import "DoraemonManager.h"
 
 //默认超时间隔
 static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
@@ -74,23 +76,16 @@ static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
         }
         [DoraemonANRTool saveANRInfo:info];
         
-        int duration = [info[@"duration"] intValue];
-        
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            DoraemonANRDetailViewController *vc = [[DoraemonANRDetailViewController alloc] init];
-            vc.info = info;
-            [UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
-        }];
-        
-        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            
-        }];
-
-        UIAlertController *vc = [UIAlertController alertControllerWithTitle: @"Warn" message: [NSString stringWithFormat: @"在主线程中阻塞时间超过 %d ms，请查看详细的调用堆栈信息解决问题", duration] preferredStyle:UIAlertControllerStyleAlert];
-        [vc addAction:action];
-        [vc addAction:action2];
-        
-        [UIApplication.sharedApplication.keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
+        if (![DoraemonManager shareInstance].isAlreadyNoticed) {
+            [DoraemonManager shareInstance].isAlreadyNoticed = YES;
+            int duration = [info[@"duration"] intValue];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:true];
+            hud.mode = MBProgressHUDModeText;
+            hud.detailsLabel.text = [NSString stringWithFormat: @"在主线程中阻塞时间超过 %d ms，请查看详细的调用堆栈信息解决问题", duration];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [hud hideAnimated:true];
+            });
+        }
 
     });
 

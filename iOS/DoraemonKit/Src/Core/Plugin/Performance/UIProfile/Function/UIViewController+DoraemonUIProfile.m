@@ -11,6 +11,7 @@
 #import "DoraemonDefine.h"
 #import <objc/runtime.h>
 #import "DoraemonUIProfileWindow.h"
+#import "DoraemonManager.h"
 
 @interface UIViewController ()
 
@@ -26,10 +27,20 @@
     dispatch_once(&onceToken, ^{
         [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewDidAppear:) swizzledSel:@selector(doraemon_viewDidAppear:)];
         [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewWillDisappear:) swizzledSel:@selector(doraemon_viewWillDisappear:)];
+        
+        [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewDidLoad) swizzledSel:@selector(doraemon_viewDidLoad)];
+
     });
 }
 
+- (void)doraemon_viewDidLoad {
+    
+    [self doraemon_viewDidLoad];
+}
+
 - (void)doraemon_viewDidAppear:(BOOL)animated{
+    [DoraemonManager shareInstance].isAlreadyNoticed = NO;
+    [DoraemonManager shareInstance].currentPage = NSStringFromClass(self.class);
     [self doraemon_viewDidAppear:animated];
 }
 

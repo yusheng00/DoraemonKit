@@ -78,12 +78,10 @@
 
 - (void)show{
     self.hidden = NO;
-    [_vc startRecord];
     [self resetLayout];
 }
 
 - (void)hide{
-    [_vc endRecord];
     self.hidden = YES;
     [self resetLayout];
     

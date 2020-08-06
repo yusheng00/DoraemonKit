@@ -13,6 +13,8 @@ typedef void (^DoraemonFPSBlock)(NSInteger fps);
 
 @interface DoraemonFPSUtil : NSObject
 
++ (DoraemonFPSUtil *)shareInstance;
+
 - (void)start;
 - (void)end;
 - (void)addFPSBlock:(DoraemonFPSBlock)block;

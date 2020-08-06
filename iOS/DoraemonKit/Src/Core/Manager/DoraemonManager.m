@@ -152,6 +152,33 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
     }];
 }
 
+- (void)openFLoatView {
+    /// 悬浮视图
+    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake([UIScreen mainScreen].bounds.size.width - 90, 60, 80, 80)];
+    label.numberOfLines = 0;
+    label.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont systemFontOfSize:12];
+    label.userInteractionEnabled = YES;
+    label.layer.cornerRadius = 20;
+    label.layer.masksToBounds = YES;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showDebugView)];
+    
+    [label addGestureRecognizer:tapGesture];
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveDebugView)];
+    [label addGestureRecognizer:panGesture];
+
+}
+
+- (void)showDebugView {
+    
+}
+
+- (void)moveDebugView {
+    
+}
 
 /**
  初始化内置工具数据

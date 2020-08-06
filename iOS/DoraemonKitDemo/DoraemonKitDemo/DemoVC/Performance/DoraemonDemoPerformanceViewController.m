@@ -8,7 +8,6 @@
 
 #import "DoraemonDemoPerformanceViewController.h"
 #import "UIView+Doraemon.h"
-#import <AFNetworking/AFNetworking.h>
 #import "DoraemonDefine.h"
 
 @interface DoraemonDemoPerformanceViewController (){
@@ -118,30 +117,7 @@
 }
 
 - (void)flowClick{
-    for(int i=0 ; i<10; i++){
-//        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-//        session.requestSerializer = [AFHTTPRequestSerializer serializer];// 请求
-//        session.responseSerializer = [AFHTTPResponseSerializer serializer];// 响应
-//        session.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html", nil];
-//        [session GET:@"https://www.taobao.com/" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-//            NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//            NSLog(@"请求成功 %@",string);
-//        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//            NSLog(@"请求失败");
-//        }];
-        
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        manager.requestSerializer = [AFHTTPRequestSerializer serializer];// 请求
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];// 响应
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html", nil];
-        [manager GET:@"https://www.taobao.com/" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *string = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            NSLog(@"request success %@",string);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"request failure");
-        }];
-    }
-
+    
 }
 
 

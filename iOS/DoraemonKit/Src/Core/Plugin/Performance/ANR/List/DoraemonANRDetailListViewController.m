@@ -1,36 +1,34 @@
 //
-//  DoraemonANRListViewController.m
-//  DoraemonKit-DoraemonKit
+//  DoraemonANRDetailListViewController.m
+//  DoraemonKit
 //
-//  Created by yixiang on 2018/6/15.
+//  Created by apple on 2020/8/5.
 //
 
-#import "DoraemonANRListViewController.h"
+#import "DoraemonANRDetailListViewController.h"
 #import "DoraemonANRManager.h"
 #import "DoraemonANRListCell.h"
 #import "DoraemonANRDetailViewController.h"
 #import "DoraemonSandboxModel.h"
 #import "DoraemonANRTool.h"
 #import "DoraemonDefine.h"
-#import "DoraemonANRDetailListViewController.h"
 
-@interface DoraemonANRListViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface DoraemonANRDetailListViewController () <UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, copy) NSArray *anrArray;
 
 @end
 
-@implementation DoraemonANRListViewController
+@implementation DoraemonANRDetailListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = DoraemonLocalizedString(@"卡顿列表");
+    self.title = @"performance info";
     
     [self loadANRData];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, IPHONE_NAVIGATIONBAR_HEIGHT, self.view.doraemon_width, self.view.doraemon_height-IPHONE_NAVIGATIONBAR_HEIGHT) style:UITableViewStylePlain];
-//    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
@@ -41,7 +39,7 @@
     // 获取 ANR 目录
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-    NSString *targetPath = [cachePath stringByAppendingPathComponent: [NSString stringWithFormat:@"ANR"]];
+    NSString *targetPath = [cachePath stringByAppendingPathComponent: [NSString stringWithFormat:@"ANR/%@", self.targetPath]];
 
     if (targetPath && [manager fileExistsAtPath:targetPath]) {
         [self loadPath: targetPath];
@@ -77,29 +75,29 @@
              return NSOrderedSame;
          }];
          
-//         // 构造数据源
-//         NSMutableArray *files = [NSMutableArray array];
-//         [sortedPaths enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//             if ([obj isKindOfClass:[NSString class]]) {
-//                 NSString *sortedPath = obj;
-//
-//                 BOOL isDir = NO;
-//                 NSString *fullPath = [path stringByAppendingPathComponent:sortedPath];
-//                 [fm fileExistsAtPath:fullPath isDirectory:&isDir];
-//
-//                 DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
-//                 model.path = fullPath;
-//                 if (isDir) {
-//                     model.type = DoraemonSandboxFileTypeDirectory;
-//                 } else {
-//                     model.type = DoraemonSandboxFileTypeFile;
-//                 }
-//                 model.name = sortedPath;
-//
-//                 [files addObject:model];
-//             }
-//         }];
-         self.anrArray = sortedPaths.copy;
+         // 构造数据源
+         NSMutableArray *files = [NSMutableArray array];
+         [sortedPaths enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+             if ([obj isKindOfClass:[NSString class]]) {
+                 NSString *sortedPath = obj;
+                 
+                 BOOL isDir = NO;
+                 NSString *fullPath = [path stringByAppendingPathComponent:sortedPath];
+                 [fm fileExistsAtPath:fullPath isDirectory:&isDir];
+                 
+                 DoraemonSandboxModel *model = [[DoraemonSandboxModel alloc] init];
+                 model.path = fullPath;
+                 if (isDir) {
+                     model.type = DoraemonSandboxFileTypeDirectory;
+                 } else {
+                     model.type = DoraemonSandboxFileTypeFile;
+                 }
+                 model.name = sortedPath;
+                 
+                 [files addObject:model];
+             }
+         }];
+         self.anrArray = files.copy;
          
          [self.tableView reloadData];
         
@@ -139,11 +137,11 @@
     DoraemonANRListCell *cell = [tableView dequeueReusableCellWithIdentifier:identifer];
     if (!cell) {
         cell = [[DoraemonANRListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
-    } 
+    }
     
     if (indexPath.row < self.anrArray.count) {
-        NSString *string = [self.anrArray objectAtIndex:indexPath.row];
-        [cell renderCellWithData: string];
+        DoraemonSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
+        [cell renderCellWithModel:model];
     }
     
     return cell;
@@ -151,20 +149,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     if (indexPath.row < self.anrArray.count) {
-        NSString *string = [self.anrArray objectAtIndex:indexPath.row];
-        DoraemonANRDetailListViewController *vc = [[DoraemonANRDetailListViewController alloc] init];
-        vc.targetPath = string;
-        [self.navigationController pushViewController:vc animated: YES];
-        
-//        if (model.type == DoraemonSandboxFileTypeFile) {
-//            DoraemonANRDetailViewController *vc = [[DoraemonANRDetailViewController alloc] init];
-//            vc.filePath = model.path;
-//            [self.navigationController pushViewController:vc animated:YES];
-//        } else if (model.type == DoraemonSandboxFileTypeDirectory) {
-//            [self loadPath:model.path];
-//        }
+        DoraemonSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
+        if (model.type == DoraemonSandboxFileTypeFile) {
+            DoraemonANRDetailViewController *vc = [[DoraemonANRDetailViewController alloc] init];
+            vc.filePath = model.path;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (model.type == DoraemonSandboxFileTypeDirectory) {
+            [self loadPath:model.path];
+        }
     }
 }
 
@@ -182,5 +175,6 @@
         [self deleteByDoraemonSandboxModel:model];
     }
 }
+
 
 @end
