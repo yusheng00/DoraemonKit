@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取调用记录
 + (NSArray<DoraemonTimeProfilerRecord *> *)getRecords;
 
+
 #pragma mark - 配置项
 /// 设置过滤的最小函数调用时间（毫秒），小于该时间的函数调用将被忽略。 默认值:1.0
 + (void)setMinCallCost:(double)ms;

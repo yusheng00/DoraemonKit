@@ -12,11 +12,16 @@
 #import <objc/runtime.h>
 #import "DoraemonUIProfileWindow.h"
 #import "DoraemonManager.h"
+#import "DoraemonTimeProfiler.h"
+#import "Aspects.h"
+#import "DoraemonJumpRecordManager.h"
 
 @interface UIViewController ()
 
 @property (nonatomic, strong) NSNumber *doraemon_depth;
 @property (nonatomic, strong) UIView *doraemon_depthView;
+
+@property (nonatomic, strong) id strongSelf;
 
 @end
 
@@ -25,27 +30,36 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewDidAppear:) swizzledSel:@selector(doraemon_viewDidAppear:)];
         [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewWillDisappear:) swizzledSel:@selector(doraemon_viewWillDisappear:)];
-        
-        [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewDidLoad) swizzledSel:@selector(doraemon_viewDidLoad)];
+        [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(init) swizzledSel:@selector(doraemon_init)];
+        [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(presentViewController: animated: completion:) swizzledSel:@selector(doraemon_presentViewController: animated: completion:)];
 
     });
 }
 
-- (void)doraemon_viewDidLoad {
+- (instancetype)doraemon_init {
     
-    [self doraemon_viewDidLoad];
+    [[self class] aspect_hookSelector:@selector(viewDidLoad:) withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> aspectInfo, BOOL animated) {
+        [DoraemonManager shareInstance].currentPage = NSStringFromClass(self.class);
+
+        [[DoraemonJumpRecordManager sharedInstance] finishRecord: aspectInfo.instance];
+    } error:NULL];
+    
+    [[self class] aspect_hookSelector:@selector(viewDidLoad:) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo, BOOL animated) {
+        NSLog(@"%@", [NSString stringWithFormat:@"%@ after appear1", self.class]);
+    } error:NULL];
+
+    return [self doraemon_init];
 }
 
-- (void)doraemon_viewDidAppear:(BOOL)animated{
-    [DoraemonManager shareInstance].isAlreadyNoticed = NO;
-    [DoraemonManager shareInstance].currentPage = NSStringFromClass(self.class);
-    [self doraemon_viewDidAppear:animated];
+
+- (void)doraemon_presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion {
+    [[DoraemonJumpRecordManager sharedInstance] startRecordWithOrigin:self target:viewControllerToPresent];
+    [self doraemon_presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
-- (void)doraemon_viewWillDisappear:(BOOL)animated
-{
+
+- (void)doraemon_viewWillDisappear:(BOOL)animated {
     [self doraemon_viewWillDisappear:animated];
     [self resetProfileData];
 }

@@ -111,9 +111,6 @@ typedef NS_ENUM(NSUInteger, DoraemonManagerPluginType) {
 // 当前页面
 @property (nonatomic, copy) NSString *currentPage;
 
-// 弹窗提醒
-@property (nonatomic, assign) BOOL isAlreadyNoticed;
-
 @property (nonatomic, copy) NSString *pId; //产品id 平台端的工具必须填写
 
 @property (nonatomic, assign) BOOL autoDock; //dokit entry icon support autoDock，deffault yes

@@ -7,7 +7,7 @@
 
 #import "DoraemonFPSUtil.h"
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
+#import "DoraemonToastUtil.h"
 
 @interface DoraemonFPSUtil()
 
@@ -98,11 +98,7 @@
             }
             if (total < 250) {
                 // 提醒 fps 过低
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:true];
-                hud.label.text = @"FPS 连续过低";
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [hud hideAnimated:true];
-                });
+                [DoraemonToastUtil showToast: @"FPS 连续过低" inView:[UIApplication sharedApplication].keyWindow];
                 self.lowFPSTime++;
             }
             [self.fpsArray removeAllObjects];

@@ -35,12 +35,33 @@
     return _tableView;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"[]view did appear");
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"[]view will appear");
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        NSLog(@"[] init");
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"[]view did load begin");
     self.title = DoraemonDemoLocalizedString(@"DoraemonKit");
     self.navigationItem.leftBarButtonItems = nil;
     [self.view addSubview:self.tableView];
+    NSLog(@"[]view did load finish");
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -96,6 +117,7 @@
     [super viewDidLayoutSubviews];
 
     self.tableView.frame = [self fullscreen];
+    NSLog(@"[]view viewDidLayoutSubviews");
 }
 
 @end

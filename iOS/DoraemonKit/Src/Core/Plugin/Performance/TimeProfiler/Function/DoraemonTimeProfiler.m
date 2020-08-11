@@ -66,7 +66,7 @@ static NSTimeInterval stopTime;
 /// 打印调用记录
 + (void)printRecords {
     NSString *result = [self getRecordsResult];
-    DoKitLog(@"%@",result);
+    NSLog(@"%@",result);
 }
 
 + (NSString *)getRecordsResult {

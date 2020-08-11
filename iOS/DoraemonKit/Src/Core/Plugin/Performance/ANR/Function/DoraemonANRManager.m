@@ -13,7 +13,7 @@
 #import "Doraemoni18NUtil.h"
 #import "DoraemonANRTool.h"
 #import "DoraemonANRDetailViewController.h"
-#import "MBProgressHUD.h"
+#import "DoraemonToastUtil.h"
 #import "DoraemonManager.h"
 
 //默认超时间隔
@@ -24,6 +24,7 @@ static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
 @property (nonatomic, strong) DoraemonANRTracker *doraemonANRTracker;
 @property (nonatomic, copy) DoraemonANRManagerBlock block;
 
+@property (nonatomic, strong) UIView *anrNoticeView;
 @end
 
 @implementation DoraemonANRManager
@@ -76,19 +77,29 @@ static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
         }
         [DoraemonANRTool saveANRInfo:info];
         
-        if (![DoraemonManager shareInstance].isAlreadyNoticed) {
-            [DoraemonManager shareInstance].isAlreadyNoticed = YES;
-            int duration = [info[@"duration"] intValue];
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:true];
-            hud.mode = MBProgressHUDModeText;
-            hud.detailsLabel.text = [NSString stringWithFormat: @"在主线程中阻塞时间超过 %d ms，请查看详细的调用堆栈信息解决问题", duration];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [hud hideAnimated:true];
-            });
-        }
+//        int duration = [info[@"duration"] intValue];
+        self.anrNoticeView.alpha = 1;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:1 animations:^{
+                self.anrNoticeView.alpha = 0;
+            }];
+        });
 
     });
 
+}
+
+- (UIView *)anrNoticeView {
+    if (_anrNoticeView == nil) {
+        UIView * view = [[UIView alloc] initWithFrame:CGRectMake(UIScreen.mainScreen.bounds.size.width - 40, 40, 20, 20)];
+        view.backgroundColor = [UIColor redColor];
+        view.alpha = 0;
+        view.layer.cornerRadius = 10;
+        _anrNoticeView = view;
+        [[UIApplication sharedApplication].keyWindow addSubview:view];
+    }
+    
+    return _anrNoticeView;
 }
 
 - (void)addANRBlock:(DoraemonANRManagerBlock)block{

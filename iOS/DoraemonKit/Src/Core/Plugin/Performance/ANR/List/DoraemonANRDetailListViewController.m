@@ -138,7 +138,6 @@
     if (!cell) {
         cell = [[DoraemonANRListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifer];
     }
-    
     if (indexPath.row < self.anrArray.count) {
         DoraemonSandboxModel *model = [self.anrArray objectAtIndex:indexPath.row];
         [cell renderCellWithModel:model];
