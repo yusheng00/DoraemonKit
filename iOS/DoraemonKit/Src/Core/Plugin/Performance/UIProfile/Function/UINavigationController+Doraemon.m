@@ -20,14 +20,6 @@
     });
 }
 
-- (instancetype)doraemon_init {
-    [[self class] aspect_hookSelector:@selector(pushViewController:animated:) withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> aspectInfo, BOOL animated) {
-        
-        
-        
-      } error:NULL];
-    return [self doraemon_init];
-}
 
 - (void)doraemon_pushViewController:(UIViewController *)controller animated:(BOOL)animated {
     
