@@ -42,11 +42,6 @@
     [self.checkBtn needDownLine];
     [self.view addSubview:self.checkBtn];
     
-    self.clearBtn = [[DoraemonCellButton alloc] initWithFrame:CGRectMake(0, self.checkBtn.doraemon_bottom, self.view.doraemon_width, kDoraemonSizeFrom750_Landscape(104))];
-    [self.clearBtn renderUIWithTitle:DoraemonLocalizedString(@"一键清理卡顿记录")];
-    self.clearBtn.delegate = self;
-    [self.clearBtn needDownLine];
-    [self.view addSubview:self.clearBtn];
 }
 
 - (BOOL)needBigTitleView {

@@ -77,7 +77,6 @@ static CGFloat const kDoraemonBlockMonitorTimeInterval = 0.2f;
         }
         [DoraemonANRTool saveANRInfo:info];
         
-//        int duration = [info[@"duration"] intValue];
         self.anrNoticeView.alpha = 1;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:1 animations:^{

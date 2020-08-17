@@ -9,6 +9,8 @@
 #import "DoraemonJumpTimeModel.h"
 #import "DoraemonToastUtil.h"
 
+static float DjumpDuration = 0.8;
+
 @interface DoraemonJumpRecordManager()
 
 @property (nonatomic, strong) NSMutableArray *recordArray;
@@ -55,7 +57,7 @@
                     self.isStartRecord = NO;
                     model.finishTime = CACurrentMediaTime();
                     model.timeCost = model.finishTime - model.startTime;
-                    if (model.timeCost > 0.5) {
+                    if (model.timeCost > DjumpDuration) {
                         [DoraemonToastUtil showToastBlack:@"跳转时间过长" inView: [UIApplication sharedApplication].keyWindow];
                     }
                 }
