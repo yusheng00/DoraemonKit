@@ -39,6 +39,7 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
+        _fpsArray = [NSMutableArray array];
         _isStart = NO;
         _count = 0;
         _lastTime = 0;
@@ -53,7 +54,6 @@
     if (!_link) {
         _link = [CADisplayLink displayLinkWithTarget:self selector:@selector(trigger:)];
         [_link addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-        _startToRecord = YES;
     }
 }
 
@@ -87,10 +87,7 @@
     if (self.block) {
         self.block(self.fps);
     }
-}
-
-- (void)addFPSBlock:(void(^)(NSInteger fps))block{
-    self.block = block;
+    
     if (self.startToRecord) {
         if (self.fpsArray.count > 4) {
             int total = 0;
@@ -99,7 +96,7 @@
             }
             if (total < 250) {
                 // 提醒 fps 过低
-                [DoraemonToastUtil showToast: @"FPS 连续过低" inView:[UIApplication sharedApplication].keyWindow];
+                [DoraemonToastUtil showToastBlack: @"FPS 连续过低" inView:[UIApplication sharedApplication].windows.firstObject];
                 self.lowFPSTime++;
             }
             [self.fpsArray removeAllObjects];
@@ -112,6 +109,12 @@
             self.startToRecord = YES;
         }
     }
+
+}
+
+- (void)addFPSBlock:(void(^)(NSInteger fps))block{
+    self.block = block;
 }
 
 @end
+
