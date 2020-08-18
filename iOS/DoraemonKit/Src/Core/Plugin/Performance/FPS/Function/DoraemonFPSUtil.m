@@ -53,6 +53,7 @@
     if (!_link) {
         _link = [CADisplayLink displayLinkWithTarget:self selector:@selector(trigger:)];
         [_link addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+        _startToRecord = YES;
     }
 }
 

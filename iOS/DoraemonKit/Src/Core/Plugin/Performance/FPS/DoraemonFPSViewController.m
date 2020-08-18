@@ -11,6 +11,7 @@
 #import "DoraemonFPSOscillogramViewController.h"
 #import "DoraemonCellSwitch.h"
 #import "DoraemonDefine.h"
+#import "DoraemonFPSUtil.h"
 
 @interface DoraemonFPSViewController ()<DoraemonSwitchViewDelegate, DoraemonOscillogramWindowDelegate>
 
@@ -43,8 +44,14 @@
 - (void)changeSwitchOn:(BOOL)on sender:(id)sender{
     [[DoraemonCacheManager sharedInstance] saveFpsSwitch:on];
     if(on){
+        [[DoraemonFPSUtil shareInstance] start];
+        [[DoraemonFPSUtil shareInstance] addFPSBlock:^(NSInteger fps) {
+            [[DoraemonFPSOscillogramWindow shareInstance].vc.oscillogramView addHeightValue:fps*[DoraemonFPSOscillogramWindow shareInstance].vc.oscillogramView.doraemon_height/60. andTipValue:[NSString stringWithFormat:@"%zi",fps]];
+        }];
+
         [[DoraemonFPSOscillogramWindow shareInstance] show];
     }else{
+        [[DoraemonFPSUtil shareInstance] end];
         [[DoraemonFPSOscillogramWindow shareInstance] hide];
     }
 }

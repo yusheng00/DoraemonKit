@@ -31,20 +31,24 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(init) swizzledSel:@selector(doraemon_init)];
+        [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(viewWillAppear:) swizzledSel:@selector(doraemon_viewWillAppear:)];
         [[self class] doraemon_swizzleInstanceMethodWithOriginSel:@selector(presentViewController: animated: completion:) swizzledSel:@selector(doraemon_presentViewController: animated: completion:)];
+        [[self class] aspect_hookSelector:@selector(viewDidAppear:) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo, BOOL animated) {
+            [[DoraemonJumpRecordManager sharedInstance] finishRecord: aspectInfo.instance];
+        } error:NULL];
 
     });
 }
 
 - (instancetype)doraemon_init {
     
-    [[self class] aspect_hookSelector:@selector(viewDidAppear:) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> aspectInfo, BOOL animated) {
-        [DoraemonManager shareInstance].currentPage = NSStringFromClass(self.class);
-        [[DoraemonJumpRecordManager sharedInstance] finishRecord: aspectInfo.instance];
-
-    } error:NULL];
 
     return [self doraemon_init];
+}
+
+- (void)doraemon_viewWillAppear:(BOOL)animated {
+    [self doraemon_viewWillAppear:animated];
+    [DoraemonManager shareInstance].currentPage = NSStringFromClass(self.class);
 }
 
 
