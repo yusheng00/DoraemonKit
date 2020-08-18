@@ -58,7 +58,7 @@ static float DjumpDuration = 0.8;
                     model.finishTime = CACurrentMediaTime();
                     model.timeCost = model.finishTime - model.startTime;
                     if (model.timeCost > DjumpDuration) {
-                        [DoraemonToastUtil showToastBlack:@"跳转时间过长" inView: [UIApplication sharedApplication].keyWindow];
+                        [DoraemonToastUtil showToastBlack:@"跳转时间过长" inView: [UIApplication sharedApplication].windows.firstObject];
                     }
                 }
             }
