@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Core'
   
   s.subspec 'Core' do |ss| 
-    ss.source_files = 'iOS/DoraemonKit/Src/Core/**/*{.h,.m,.c,.mm}'
+    ss.source_files = 'iOS/DoraemonKit/Src/Core/**/*{.h,.m,.c,.mm,.cpp}'
     ###ss.vendored_frameworks = 'DoraemonKit/Lib/CrashReporter.framework'
     ss.resource_bundles = {
       'DoraemonKit' => 'iOS/DoraemonKit/Resource/**/*'
