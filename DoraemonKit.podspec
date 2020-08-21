@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
     ss.resource_bundles = {
       'DoraemonKit' => 'iOS/DoraemonKit/Resource/**/*'
     }
+    ss.dependency 'KSCrash'
   end
 
   s.subspec 'WithLogger' do |ss| 
