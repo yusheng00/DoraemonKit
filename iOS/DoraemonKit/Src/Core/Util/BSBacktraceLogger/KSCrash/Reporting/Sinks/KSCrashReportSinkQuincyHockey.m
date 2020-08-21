@@ -36,7 +36,7 @@
 #import "KSJSONCodecObjC.h"
 #import "KSReachabilityKSCrash.h"
 #import "Container+DeepSearch.h"
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 #import <mach/machine.h>
 #import "KSCrashMonitor_System.h"
 #import "NSString+URLEncode.h"
@@ -385,7 +385,7 @@ crashDescriptionKeys:(NSArray*) crashDescriptionKeys
     {
         if(onCompletion != nil)
         {
-            onCompletion(reports, NO, [NSError errorWithDomain:[[self class] description]
+            onCompletion(reports, NO, [NSError ks_errorWithDomain:[[self class] description]
                                                           code:0
                                                    description:@"url was nil"]);
         }
@@ -426,7 +426,7 @@ crashDescriptionKeys:(NSArray*) crashDescriptionKeys
              KSLOG_DEBUG(@"Post failed. Code %d", response.statusCode);
              KSLOG_TRACE(@"Response text:\n%@", text);
              kscrash_callCompletion(onCompletion, reports, NO,
-                                      [NSError errorWithDomain:[[self class] description]
+                                      [NSError ks_errorWithDomain:[[self class] description]
                                                           code:response.statusCode
                                                    description:text]);
          } onError:^(NSError* error)
@@ -510,7 +510,7 @@ crashDescriptionKeys:(NSArray*) crashDescriptionKeys
     {
         if(onCompletion != nil)
         {
-            onCompletion(reports, NO, [NSError errorWithDomain:[[self class] description]
+            onCompletion(reports, NO, [NSError ks_errorWithDomain:[[self class] description]
                                                           code:0
                                                    description:@"appIdentifier was nil"]);
         }

@@ -36,7 +36,7 @@
 #import "NSData+GZip.h"
 #import "KSJSONCodecObjC.h"
 #import "KSReachabilityKSCrash.h"
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 #import "KSSystemCapabilities.h"
 
 //#define KSLogger_LocalLevel TRACE
@@ -153,7 +153,7 @@
          {
              NSString* text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
              kscrash_callCompletion(onCompletion, reports, NO,
-                                      [NSError errorWithDomain:[[self class] description]
+                                      [NSError ks_errorWithDomain:[[self class] description]
                                                           code:response.statusCode
                                                    description:text]);
          } onError:^(NSError* error2)

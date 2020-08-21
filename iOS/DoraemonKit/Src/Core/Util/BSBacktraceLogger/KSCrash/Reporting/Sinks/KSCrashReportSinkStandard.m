@@ -32,7 +32,7 @@
 #import "NSData+GZip.h"
 #import "KSJSONCodecObjC.h"
 #import "KSReachabilityKSCrash.h"
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 
 //#define KSLogger_LocalLevel TRACE
 #import "KSLogger.h"

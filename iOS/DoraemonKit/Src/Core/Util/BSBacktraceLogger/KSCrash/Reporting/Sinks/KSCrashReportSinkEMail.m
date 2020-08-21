@@ -31,7 +31,7 @@
 #import "KSCrashReportFilterBasic.h"
 #import "KSCrashReportFilterGZip.h"
 #import "KSCrashReportFilterJSON.h"
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 #import "KSSystemCapabilities.h"
 
 //#define KSLogger_LocalLevel TRACE
@@ -115,7 +115,7 @@
             break;
         case MFMailComposeResultCancelled:
             kscrash_callCompletion(self.onCompletion, self.reports, NO,
-                                     [NSError errorWithDomain:[[self class] description]
+                                     [NSError ks_errorWithDomain:[[self class] description]
                                                          code:0
                                                   description:@"User cancelled"]);
             break;
@@ -125,7 +125,7 @@
         default:
         {
             kscrash_callCompletion(self.onCompletion, self.reports, NO,
-                                     [NSError errorWithDomain:[[self class] description]
+                                     [NSError ks_errorWithDomain:[[self class] description]
                                                          code:0
                                                   description:@"Unknown MFMailComposeResult: %d", result]);
         }
@@ -258,7 +258,7 @@
         [keyWindow.rootViewController presentViewController:alertController animated:YES completion:NULL];
 
         kscrash_callCompletion(onCompletion, reports, NO,
-                                 [NSError errorWithDomain:[[self class] description]
+                                 [NSError ks_errorWithDomain:[[self class] description]
                                                      code:0
                                               description:@"E-Mail not enabled on device"]);
         return;

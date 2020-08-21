@@ -27,7 +27,7 @@
 
 #import "NSData+GZip.h"
 
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 #import <zlib.h>
 
 
@@ -68,7 +68,7 @@ static NSString* zlibError(int errorCode)
     uInt length = (uInt)[self length];
     if(length == 0)
     {
-        [NSError clearError:error];
+        [NSError ks_clearError:error];
         return [NSData data];
     }
 
@@ -86,7 +86,7 @@ static NSString* zlibError(int errorCode)
                        Z_DEFAULT_STRATEGY);
     if(err != Z_OK)
     {
-        [NSError fillError:error
+        [NSError ks_fillError:error
                 withDomain:[[self class] description]
                       code:0
                description:@"deflateInit2: %@", zlibError(err)];
@@ -106,7 +106,7 @@ static NSString* zlibError(int errorCode)
 
     if(err != Z_STREAM_END)
     {
-        [NSError fillError:error
+        [NSError ks_fillError:error
                 withDomain:[[self class] description]
                       code:0
                description:@"deflate: %@", zlibError(err)];
@@ -116,7 +116,7 @@ static NSString* zlibError(int errorCode)
 
     [compressedData setLength:stream.total_out];
 
-    [NSError clearError:error];
+    [NSError ks_clearError:error];
     deflateEnd(&stream);
     return compressedData;
 }
@@ -126,7 +126,7 @@ static NSString* zlibError(int errorCode)
     uInt length = (uInt)[self length];
     if(length == 0)
     {
-        [NSError clearError:error];
+        [NSError ks_clearError:error];
         return [NSData data];
     }
 
@@ -139,7 +139,7 @@ static NSString* zlibError(int errorCode)
     err = inflateInit2(&stream, 16+MAX_WBITS);
     if(err != Z_OK)
     {
-        [NSError fillError:error
+        [NSError ks_fillError:error
                 withDomain:[[self class] description]
                       code:0
                description:@"inflateInit2: %@", zlibError(err)];
@@ -157,7 +157,7 @@ static NSString* zlibError(int errorCode)
         err = inflate(&stream, Z_NO_FLUSH);
         if(err != Z_OK && err != Z_STREAM_END)
         {
-            [NSError fillError:error
+            [NSError ks_fillError:error
                     withDomain:[[self class] description]
                           code:0
                    description:@"inflate: %@", zlibError(err)];
@@ -168,7 +168,7 @@ static NSString* zlibError(int errorCode)
                            length:sizeof(buffer) - stream.avail_out];
     }
 
-    [NSError clearError:error];
+    [NSError ks_clearError:error];
     inflateEnd(&stream);
     return expandedData;
 }

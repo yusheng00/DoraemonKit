@@ -26,7 +26,7 @@
 
 
 #import "KSCrashReportFilterBasic.h"
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 #import "Container+DeepSearch.h"
 #import "KSVarArgs.h"
 
@@ -145,7 +145,7 @@
     if(filterCount != [keys count])
     {
         kscrash_callCompletion(onCompletion, reports, NO,
-                                 [NSError errorWithDomain:[[self class] description]
+                                 [NSError ks_errorWithDomain:[[self class] description]
                                                      code:0
                                               description:@"Key/filter mismatch (%d keys, %d filters",
                                   [keys count], filterCount]);
@@ -181,7 +181,7 @@
                                 else if(filteredReports == nil)
                                 {
                                     kscrash_callCompletion(onCompletion, filteredReports, NO,
-                                                             [NSError errorWithDomain:[[self class] description]
+                                                             [NSError ks_errorWithDomain:[[self class] description]
                                                                                  code:0
                                                                           description:@"filteredReports was nil"]);
                                 }
@@ -320,7 +320,7 @@
                                 else if(filteredReports == nil)
                                 {
                                     kscrash_callCompletion(onCompletion, filteredReports, NO,
-                                                             [NSError errorWithDomain:[[self class] description]
+                                                             [NSError ks_errorWithDomain:[[self class] description]
                                                                                  code:0
                                                                           description:@"filteredReports was nil"]);
                                 }
@@ -400,7 +400,7 @@
             if(!self.allowNotFound)
             {
                 kscrash_callCompletion(onCompletion, filteredReports, NO,
-                                         [NSError errorWithDomain:[[self class] description]
+                                         [NSError ks_errorWithDomain:[[self class] description]
                                                              code:0
                                                       description:@"Key not found: %@", self.key]);
                 return;
@@ -551,7 +551,7 @@
             if(object == nil)
             {
                 kscrash_callCompletion(onCompletion, filteredReports, NO,
-                                         [NSError errorWithDomain:[[self class] description]
+                                         [NSError ks_errorWithDomain:[[self class] description]
                                                              code:0
                                                       description:@"Report did not have key path %@", keyPath]);
                 return;
@@ -606,7 +606,7 @@
         if(converted == nil)
         {
             kscrash_callCompletion(onCompletion, filteredReports, NO,
-                                     [NSError errorWithDomain:[[self class] description]
+                                     [NSError ks_errorWithDomain:[[self class] description]
                                                          code:0
                                                   description:@"Could not convert report to UTF-8"]);
             return;

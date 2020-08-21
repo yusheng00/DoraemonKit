@@ -30,7 +30,7 @@
 #import "KSCrashInstallation+Private.h"
 #import "KSCrashReportFields.h"
 #import "KSCrashReportSinkQuincyHockey.h"
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 
 
 #define kQuincyDefaultKeyUserID @"user_id"

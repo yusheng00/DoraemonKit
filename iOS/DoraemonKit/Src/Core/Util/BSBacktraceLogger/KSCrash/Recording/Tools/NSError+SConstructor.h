@@ -1,5 +1,5 @@
 //
-//  NSError+SimpleConstructor.h
+//  NSError+SConstructor.h
 //
 //  Created by Karl Stenerud on 2013-02-09.
 //
@@ -38,7 +38,7 @@
  * @param fmt Description of the error (gets placed into the user data with the key
  *                    NSLocalizedDescriptionKey).
  */
-+ (NSError*) errorWithDomain:(NSString*) domain
++ (NSError*) ks_errorWithDomain:(NSString*) domain
                         code:(NSInteger) code
                  description:(NSString*) fmt, ...;
 
@@ -51,7 +51,7 @@
  *                    NSLocalizedDescriptionKey).
  * @return NO (to keep the analyzer happy).
  */
-+ (BOOL) fillError:(NSError**) error
++ (BOOL) ks_fillError:(NSError**) error
         withDomain:(NSString*) domain
               code:(NSInteger) code
        description:(NSString*) fmt, ...;
@@ -61,6 +61,6 @@
  * @param error Error pointer to fill (ignored if nil).
  * @return NO (to keep the analyzer happy).
  */
-+ (BOOL) clearError:(NSError**) error;
++ (BOOL) ks_clearError:(NSError**) error;
 
 @end

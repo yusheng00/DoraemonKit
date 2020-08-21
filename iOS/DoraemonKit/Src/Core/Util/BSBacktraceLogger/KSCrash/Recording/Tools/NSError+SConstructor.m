@@ -1,5 +1,5 @@
 //
-//  NSError+SimpleConstructor.m
+//  NSError+SConstructor.m
 //
 //  Created by Karl Stenerud on 2013-02-09.
 //
@@ -24,12 +24,12 @@
 // THE SOFTWARE.
 //
 
-#import "NSError+SimpleConstructor.h"
+#import "NSError+SConstructor.h"
 
 
-@implementation NSError (SimpleConstructor)
+@implementation NSError (SConstructor)
 
-+ (NSError*) errorWithDomain:(NSString*) domain code:(NSInteger) code description:(NSString*) fmt, ...
++ (NSError*) ks_errorWithDomain:(NSString*) domain code:(NSInteger) code description:(NSString*) fmt, ...
 {
     va_list args;
     va_start(args, fmt);
@@ -43,7 +43,7 @@
                                                                 forKey:NSLocalizedDescriptionKey]];
 }
 
-+ (BOOL) fillError:(NSError* __autoreleasing *) error
++ (BOOL) ks_fillError:(NSError* __autoreleasing *) error
         withDomain:(NSString*) domain
               code:(NSInteger) code
        description:(NSString*) fmt, ...
@@ -64,7 +64,7 @@
     return NO;
 }
 
-+ (BOOL) clearError:(NSError* __autoreleasing *) error
++ (BOOL) ks_clearError:(NSError* __autoreleasing *) error
 {
     if(error != nil)
     {
