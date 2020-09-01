@@ -6,7 +6,6 @@
 //
 
 #import "DoraemonBacktraceLogger.h"
-#import "KSDemangle_Swift.h"
 #import <mach/mach.h>
 #include <dlfcn.h>
 #include <pthread.h>
@@ -212,7 +211,6 @@ NSString* doraemon_logBacktraceEntry(const int entryNum,
     
     uintptr_t offset = address - (uintptr_t)dlInfo->dli_saddr;
     const char* sname = dlInfo->dli_sname;
-    sname = ksdm_demangleSwift(sname);
     if(sname == NULL) {
         sprintf(saddrBuff, Doraemon_POINTER_SHORT_FMT, (uintptr_t)dlInfo->dli_fbase);
         sname = saddrBuff;
@@ -329,15 +327,27 @@ bool doraemon_dladdr(const uintptr_t address, Dl_info* const info) {
             }
             if(bestMatch != NULL) {
                 info->dli_saddr = (void*)(bestMatch->n_value + imageVMAddrSlide);
-                info->dli_sname = (char*)((intptr_t)stringTable + (intptr_t)bestMatch->n_un.n_strx);
-                if(*info->dli_sname == '_') {
-                    info->dli_sname++;
-                }
-                // This happens if all symbols have been stripped.
-                if(info->dli_saddr == info->dli_fbase && bestMatch->n_type == 3) {
+                if(bestMatch->n_desc == 16) {
+                    // This image has been stripped. The name is meaningless, and
+                    // almost certainly resolves to "_mh_execute_header"
                     info->dli_sname = NULL;
+                } else {
+                    info->dli_sname = (char*)((intptr_t)stringTable + (intptr_t)bestMatch->n_un.n_strx);
+                    if(*info->dli_sname == '_') {
+                        info->dli_sname++;
+                    }
                 }
                 break;
+                
+//                info->dli_sname = (char*)((intptr_t)stringTable + (intptr_t)bestMatch->n_un.n_strx);
+//                if(*info->dli_sname == '_') {
+//                    info->dli_sname++;
+//                }
+//                // This happens if all symbols have been stripped.
+//                if(info->dli_saddr == info->dli_fbase && bestMatch->n_type == 3) {
+//                    info->dli_sname = NULL;
+//                }
+//                break;
             }
         }
         cmdPtr += loadCmd->cmdsize;
