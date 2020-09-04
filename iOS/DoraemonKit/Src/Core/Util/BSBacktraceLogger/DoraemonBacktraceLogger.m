@@ -14,6 +14,7 @@
 #include <string.h>
 #include <mach-o/dyld.h>
 #include <mach-o/nlist.h>
+#include "SwiftDemangle.h"
 
 #pragma -mark DEFINE MACRO FOR DIFFERENT CPU ARCHITECTURE
 #if defined(__arm64__)
@@ -211,6 +212,15 @@ NSString* doraemon_logBacktraceEntry(const int entryNum,
     
     uintptr_t offset = address - (uintptr_t)dlInfo->dli_saddr;
     const char* sname = dlInfo->dli_sname;
+    if (symbolic_demangle_is_swift_symbol(sname)) {
+        char snameBuff[200];
+        symbolic_demangle_swift(sname, snameBuff, strlen(snameBuff), 2);
+        NSMutableString *tem1 = [NSMutableString string];
+        for (int i = 0; i < sizeof(snameBuff); i++) {
+            [tem1 appendFormat:@"%c", snameBuff[i]];
+        }
+    }
+    
     if(sname == NULL) {
         sprintf(saddrBuff, Doraemon_POINTER_SHORT_FMT, (uintptr_t)dlInfo->dli_fbase);
         sname = saddrBuff;

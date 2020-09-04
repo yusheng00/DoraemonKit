@@ -48,6 +48,9 @@
 
 - (void)doraemon_viewWillAppear:(BOOL)animated {
     [self doraemon_viewWillAppear:animated];
+    if ([NSStringFromClass(self.class) hasPrefix:@"Doraemon"]) {
+        return;
+    }
     [DoraemonManager shareInstance].currentPage = NSStringFromClass(self.class);
 }
 
