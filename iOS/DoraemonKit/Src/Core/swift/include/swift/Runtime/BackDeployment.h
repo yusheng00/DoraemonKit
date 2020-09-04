@@ -16,7 +16,7 @@
 #if defined(__APPLE__) && defined(__MACH__)
 
 #include "Config.h"
-#include "../../../stdlib/public/SwiftShims/Visibility.h"
+#include "Visibility.h"
 
 #ifdef __cplusplus
 namespace swift { extern "C" {
