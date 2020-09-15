@@ -12,10 +12,10 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GCDWebServer (3.5.3):
-    - GCDWebServer/Core (= 3.5.3)
-  - GCDWebServer/Core (3.5.3)
-  - YYDebugDatabase (2.0.8):
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
+  - YYDebugDatabase (2.1.0):
     - FMDB
     - GCDWebServer
 
@@ -39,16 +39,16 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   YYDebugDatabase:
-    :commit: b68105eb0784aede05036616c0b94d26b8d97ad0
+    :commit: 87f4214ab9656b75dd74dfcc042cc3b5067ebab6
     :git: https://github.com/y500/YYDebugDatabase.git
 
 SPEC CHECKSUMS:
   CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
   DoraemonKit: 720f114d0ba54e1496e7cf2568d748519c78fdb3
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GCDWebServer: c0ab22c73e1b84f358d1e2f74bf6afd1c60829f2
-  YYDebugDatabase: 037486297a7dd40bc50e2c6df5de7b4ad24c9c17
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
+  YYDebugDatabase: e684a7f79fca2e3673a23347cefb822f911f3124
 
 PODFILE CHECKSUM: bc0cc15a4c59870bd32405fdde43bfe398427f58
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
