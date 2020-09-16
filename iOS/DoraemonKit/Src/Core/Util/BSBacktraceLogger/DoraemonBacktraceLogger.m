@@ -6,7 +6,6 @@
 //
 
 #import "DoraemonBacktraceLogger.h"
-#import "KSDemangle_Swift.h"
 #import <mach/mach.h>
 #include <dlfcn.h>
 #include <pthread.h>
@@ -212,7 +211,6 @@ NSString* doraemon_logBacktraceEntry(const int entryNum,
     
     uintptr_t offset = address - (uintptr_t)dlInfo->dli_saddr;
     const char* sname = dlInfo->dli_sname;
-    sname = ksdm_demangleSwift(sname);
     if(sname == NULL) {
         sprintf(saddrBuff, Doraemon_POINTER_SHORT_FMT, (uintptr_t)dlInfo->dli_fbase);
         sname = saddrBuff;
