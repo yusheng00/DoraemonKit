@@ -14,7 +14,6 @@ end
 #install! 'cocoapods', generate_multiple_pod_projects: true
 
 target :'DoraemonKitDemo' do
-  pod 'SwiftDemangle'
   pod 'DoraemonKit', :subspecs => ['Core','WithLogger','WithDatabase'], :path => '../../'
   #pod 'fishhook', :git => 'git@github.com:facebook/fishhook.git', :configurations => ['Debug']
   pod 'YYDebugDatabase', :git => 'https://github.com/y500/YYDebugDatabase.git', :configurations => ['Debug']
